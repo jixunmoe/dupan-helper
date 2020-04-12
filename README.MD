@@ -4,16 +4,16 @@
 <del>Chrome 插件版：[仓库用度盘投稿助手](https://chrome.google.com/webstore/detail/iaogjohjloacflojfjajlcmmoajbdpcb)</del> 源码丢了，实现内容和这个脚本（的旧版本）基本没差别。
 
 ⚠　只需要「秒传」功能的可以参见这个脚本：  
-　　[秒传链接提取](https://greasyfork.org/scripts/397324)
+　　　　[秒传链接提取](https://greasyfork.org/scripts/397324)
 
 ## 功能
 
 * <del>自定义分享 (自定义提取码，自动生成仓库投稿代码[旧版])</del> 目前严打，有些文件根本分享不出去  
-  ![自定义提取码](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/img/custom_share.png)
+  ![自定义提取码](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/custom_share.png)
 * 批量重命名 (自定义命名规则)  
-  ![批量重命名](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/img/batch_rename.png)
+  ![批量重命名](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/batch_rename.png)
 * 标准提取码  
-  ![标准提取码](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/img/std_code.png)
+  ![标准提取码](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/std_code.png)
 
 提取码支持：
 

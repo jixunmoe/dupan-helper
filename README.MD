@@ -1,7 +1,7 @@
 仓库用度盘投稿助手
 ==================
 
-[![到 GreasyFork 安装](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/btn_gf.png)](https://greasyfork.org/scripts/3285)　[![到 GitHub 安装](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/btn_github.png)](https://github.com/JixunMoe/dupan-helper/raw/master/dist/dupan-helper.user.js)
+[![到 GreasyFork 安装](https://i.imgur.com/Kl384i1.png)](https://greasyfork.org/scripts/3285)　[![到 GitHub 安装](https://i.imgur.com/guDdNEc.png)](https://github.com/JixunMoe/dupan-helper/raw/master/dist/dupan-helper.user.js)
 
 <del>Chrome 插件版：[仓库用度盘投稿助手](https://chrome.google.com/webstore/detail/iaogjohjloacflojfjajlcmmoajbdpcb)</del> 源码丢了，实现内容和这个脚本（的旧版本）基本没差别。
 
@@ -11,11 +11,11 @@
 ## 功能
 
 * 自定义分享 (自定义提取码，自动生成仓库投稿代码[旧版])　　⚠ 目前严打，有些文件根本分享不出去  
-  ![自定义提取码](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/custom_share.png)
+  ![自定义提取码](https://i.imgur.com/7FFII3m.png)
 * 批量重命名 (自定义命名规则)  
-  ![批量重命名](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/batch_rename.png)
+  ![批量重命名](https://i.imgur.com/6TQfOP8.png)
 * 标准提取码  
-  ![标准提取码](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/std_code.png)
+  ![标准提取码](https://i.imgur.com/VkNMgMO.png)
 
 提取码支持：
 
@@ -24,9 +24,7 @@
 * 梦姬标准提取码
 * PanDownload 的 `bdpan://` 协议链接。
 
-「提取码」的原理、生成器、以及格式介绍: https://jixun.moe/du-code-gen/
-
-功能请参见截图，测试于 TamperMonkey 以及理论兼容 GreaseMonkey 2 (未测试)。
+测试于 TamperMonkey 以及理论兼容 GreaseMonkey 2 (未测试)。
 
 ## 标准提取码格式
 

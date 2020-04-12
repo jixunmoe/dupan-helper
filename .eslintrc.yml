@@ -1,0 +1,25 @@
+env:
+  browser: true
+  node: true
+  greasemonkey: true
+  es2020: true
+  jquery: true
+extends:
+  - airbnb-base
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+  entryPoint: false
+parserOptions:
+  ecmaVersion: 2018
+  sourceType: module
+rules:
+  no-console: off
+  prefer-rest-params: off
+  no-underscore-dangle: off
+  no-param-reassign: off
+  no-plusplus: off
+  no-control-regex: off
+  no-await-in-loop: off
+  no-restricted-syntax: ["error", "ForInStatement", "LabeledStatement", "WithStatement"]
+

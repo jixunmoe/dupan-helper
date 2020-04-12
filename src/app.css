@@ -1,0 +1,121 @@
+.jx_btn {
+    background: #fefefe;
+    background: linear-gradient(to bottom,  #fefefe 0%,#f2f2f2 88%);
+
+    display: inline-block;
+    line-height: 25px;
+    vertical-align: middle;
+    margin: 0 0 0 10px;
+    text-decoration: none;
+    border: 1px solid #AAA;
+    padding: 0px 20px;
+    height: 26px;
+    border-radius: 2px;
+
+    min-width: 3em;
+    text-align: center;
+}
+.jx_btn, .jx_btn:hover, .jx_btn:focus {
+    color: #666;
+}
+.jx_btn:active {
+    color: #06C;
+    background: #e3e3e3;
+    background: -moz-linear-gradient(top,  #e3e3e3 0%, #f7f7f7 12%);
+    background: -webkit-linear-gradient(top,  #e3e3e3 0%,#f7f7f7 12%);
+    background: linear-gradient(to bottom,  #e3e3e3 0%,#f7f7f7 12%);
+}
+.jx-input {
+    margin: 9px 0;
+    _margin: 7px 0;
+    padding: 0 0 0 5px;
+    width: 200px;
+    height: 24px;
+    vertical-align: middle;
+    border: 1px solid #3b8cff;
+    border: 1px solid rgba(58,140,255,.3);
+    background: #fff;
+    border-radius: 2px;
+}
+
+.jx_hide   { display: none }
+.jx_c_warn { color: red }
+
+.jx_list {
+    text-align: left;
+    max-height: 5.5em;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    line-height: 1;
+    padding: .2em;
+    margin-bottom: .5em;
+}
+
+/*
+.jx_list:not(:empty) {
+  border: 1px solid #ddd;
+}
+*/
+
+.jx_list > li {
+    display: flex;
+    white-space: nowrap;
+    line-height: 1.3;
+}
+
+.jx_list .name {
+    color: black;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.jx_list .size {
+    color: #777;
+
+    flex-grow: 1;
+}
+
+.save-complete-details {
+    max-height: 30em;
+}
+
+.jx-status {
+    padding-left: 0.25em;
+}
+
+.jx-status-success {
+    color: green;
+}
+
+.jx-status-skip {
+    color: gray;
+}
+
+.jx-status-fail {
+    color: red;
+}
+
+textarea.jx{
+    width: 100%;
+    min-height: 5em;
+    line-height: 1;
+}
+
+.jx-form-options {
+    display: flex;
+    justify-content: left;
+}
+
+.jx-form-options > label {
+    display: inline-flex;
+    align-items: center;
+}
+
+.jx-form-options > label + label {
+    margin-left: 0.5em;
+}
+
+.jx-form-options > label > input {
+    margin-right: 0.25em;
+}

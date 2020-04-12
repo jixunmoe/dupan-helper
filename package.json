@@ -1,0 +1,22 @@
+{
+  "name": "dupan-helper",
+  "version": "1.2.3",
+  "description": "适用于百度网盘的一个用户脚本。",
+  "main": "src/app.js",
+  "scripts": {
+    "build": "rollup -c",
+    "eslint": "eslint src"
+  },
+  "author": "Jixun <https://jixun.moe>",
+  "license": "MIT",
+  "dependencies": {
+    "rollup": "^2.6.0",
+    "rollup-plugin-postcss": "^2.5.0",
+    "rollup-plugin-string": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2"
+  }
+}

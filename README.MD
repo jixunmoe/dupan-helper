@@ -1,7 +1,7 @@
 仓库用度盘投稿助手
 ==================
 
-[![到 GreasyFork 安装](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/btn_gf.png)](https://greasyfork.org/scripts/3285)　[![到 GreasyFork 安装](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/btn_gf.png)](https://github.com/JixunMoe/dupan-helper/raw/master/dist/dupan-helper.user.js)
+[![到 GreasyFork 安装](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/btn_gf.png)](https://greasyfork.org/scripts/3285)　[![到 GitHub 安装](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/btn_github.png)](https://github.com/JixunMoe/dupan-helper/raw/master/dist/dupan-helper.user.js)
 
 <del>Chrome 插件版：[仓库用度盘投稿助手](https://chrome.google.com/webstore/detail/iaogjohjloacflojfjajlcmmoajbdpcb)</del> 源码丢了，实现内容和这个脚本（的旧版本）基本没差别。
 

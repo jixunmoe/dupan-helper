@@ -10,7 +10,7 @@
 
 ## 功能
 
-* <del>自定义分享 (自定义提取码，自动生成仓库投稿代码[旧版])</del> 目前严打，有些文件根本分享不出去  
+* 自定义分享 (自定义提取码，自动生成仓库投稿代码[旧版])　　⚠ 目前严打，有些文件根本分享不出去  
   ![自定义提取码](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/custom_share.png)
 * 批量重命名 (自定义命名规则)  
   ![批量重命名](https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/images/batch_rename.png)

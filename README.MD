@@ -8,6 +8,8 @@
 ⚠　只需要「秒传」功能的可以参见这个脚本：  
 　　　　[秒传链接提取](https://greasyfork.org/scripts/397324)
 
+👉　源代码托管在 [GitHub](https://github.com/JixunMoe/dupan-helper)
+
 ## 功能
 
 * 自定义分享 (自定义提取码，自动生成仓库投稿代码[旧版])　　⚠ 目前严打，有些文件根本分享不出去  

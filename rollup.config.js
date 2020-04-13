@@ -2,7 +2,6 @@
 
 const postcss = require('rollup-plugin-postcss');
 const { string } = require('rollup-plugin-string');
-const builtins = require('rollup-plugin-node-builtins');
 const userScript = require('./user-script/rollup-user-script');
 
 module.exports = {
@@ -12,7 +11,6 @@ module.exports = {
     format: 'cjs',
   },
   plugins: [
-    builtins(),
     string({
       include: 'src/**/*.html',
     }),

@@ -1,6 +1,6 @@
-import { parse } from 'querystring';
+import parseQueryString from './parseQueryString';
 
-const search = parse(window.location.search.slice(1).replace(/\+/g, '%2b'));
+const search = parseQueryString(window.location.search.slice(1).replace(/\+/g, '%2b'));
 
 export function hasQuery(name) {
   return Object.prototype.hasOwnProperty.call(search, name);

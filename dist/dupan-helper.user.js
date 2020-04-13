@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         仓库用度盘投稿助手
 // @namespace    moe.jixun.dupan.galacg
-// @version      1.3.0
+// @version      1.3.1
 // @description  简易功能增强, 方便仓库投稿用
 // @author       Jixun<https://jixun.moe/>
 
@@ -1049,44 +1049,40 @@ function compose(...fns) {
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
 // If obj.hasOwnProperty has been overridden, then calling
 // obj.hasOwnProperty(prop) will break.
 // See: https://github.com/joyent/node/issues/1707
 function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
-var isArray = Array.isArray || function (xs) {
-  return Object.prototype.toString.call(xs) === '[object Array]';
-};
 
-function parse(qs, sep, eq, options) {
+function parseQueryString(qs, sep, eq, options) {
   sep = sep || '&';
   eq = eq || '=';
-  var obj = {};
+  const obj = {};
 
   if (typeof qs !== 'string' || qs.length === 0) {
     return obj;
   }
 
-  var regexp = /\+/g;
   qs = qs.split(sep);
 
-  var maxKeys = 1000;
+  let maxKeys = 1000;
   if (options && typeof options.maxKeys === 'number') {
     maxKeys = options.maxKeys;
   }
 
-  var len = qs.length;
+  let len = qs.length;
   // maxKeys <= 0 means that we should not limit keys count
   if (maxKeys > 0 && len > maxKeys) {
     len = maxKeys;
   }
 
-  for (var i = 0; i < len; ++i) {
-    var x = qs[i].replace(regexp, '%20'),
-        idx = x.indexOf(eq),
-        kstr, vstr, k, v;
+  for (let i = 0; i < len; ++i) {
+    const x = qs[i];
+    const idx = x.indexOf(eq);
+    let kstr;
+    let vstr;
 
     if (idx >= 0) {
       kstr = x.substr(0, idx);
@@ -1096,12 +1092,12 @@ function parse(qs, sep, eq, options) {
       vstr = '';
     }
 
-    k = decodeURIComponent(kstr);
-    v = decodeURIComponent(vstr);
+    const k = decodeURIComponent(kstr);
+    const v = decodeURIComponent(vstr);
 
     if (!hasOwnProperty(obj, k)) {
       obj[k] = v;
-    } else if (isArray(obj[k])) {
+    } else if (Array.isArray(obj[k])) {
       obj[k].push(v);
     } else {
       obj[k] = [obj[k], v];
@@ -1111,7 +1107,7 @@ function parse(qs, sep, eq, options) {
   return obj;
 }
 
-const search = parse(window.location.search.slice(1).replace(/\+/g, '%2b'));
+const search = parseQueryString(window.location.search.slice(1).replace(/\+/g, '%2b'));
 
 function hasQuery(name) {
   return Object.prototype.hasOwnProperty.call(search, name);

@@ -119,3 +119,7 @@ textarea.jx{
 .jx-form-options > label > input {
     margin-right: 0.25em;
 }
+
+.dialog-header-title > .select-text {
+    pointer-events: none;
+}

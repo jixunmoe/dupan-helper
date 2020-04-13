@@ -64,7 +64,7 @@ export default class ImportOnLoad {
     this.stdCodeDialog = StandardCodeDialog.create({
       content,
       forceRefresh: true,
-      confirmText: '选择目标',
+      confirmText: '选择目录',
       confirmCallback: this.selectDirectory,
     });
   }

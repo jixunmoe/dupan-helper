@@ -22,6 +22,8 @@ export default class StandardCodeDialog extends OpDialog {
     return new StandardCodeDialog(config);
   }
 
+  confirmText = '导入';
+
   confirmCallback = defaultConfirmCallback;
 
   constructor(config = {}) {

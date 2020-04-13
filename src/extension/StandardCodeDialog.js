@@ -26,7 +26,7 @@ export default class StandardCodeDialog extends OpDialog {
 
   constructor(config = {}) {
     super(template, {
-      title: '通用提取码',
+      title: '从秒传链接导入',
       ...config,
     });
 

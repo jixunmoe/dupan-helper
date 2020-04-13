@@ -11,7 +11,7 @@ export default function registerPlugin() {
   window.manifest = window.manifest.filter((plugin) => !pluginBlacklist.includes(plugin.name));
 
   window.manifest.push({
-    name: '标准提取码插件',
+    name: '秒传链接支持',
     group: 'moe.jixun.code',
     version: '1.0',
     type: '1',
@@ -20,7 +20,7 @@ export default function registerPlugin() {
     buttons: [{
       index: 2,
       disabled: 'none',
-      title: '标准提取码',
+      title: '秒传链接',
       buttonStyle: 'normal',
       pluginId: 'JIXUNSTDCODE',
       position: 'tools',

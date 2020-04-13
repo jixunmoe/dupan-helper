@@ -43,12 +43,22 @@ function fixName(name, code) {
 }
 
 export default class BatchRenameDialog extends OpDialog {
-  static create() {
-    return new BatchRenameDialog();
+  /**
+   * @param {Object} config
+   * @return StandardCodeDialog
+   */
+  static create(config = {}) {
+    return new BatchRenameDialog(config);
   }
 
-  constructor() {
-    super(template, '批量重命名');
+  /**
+   * @param {Object} config
+   */
+  constructor(config = {}) {
+    super(template, {
+      title: '批量重命名',
+      ...config,
+    });
   }
 
   bindContext() {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         仓库用度盘投稿助手
 // @namespace    moe.jixun.dupan.galacg
-// @version      1.3.4
+// @version      1.3.5
 // @description  简易功能增强, 方便仓库投稿用
 // @author       Jixun<https://jixun.moe/>
 
@@ -263,9 +263,13 @@ class OpDialog {
     return LocalStore.create(this, key);
   }
 
-  constructor(template, title) {
-    this.title = title;
+  constructor(template, options = {}) {
     this.root = $(template);
+
+    this.title = options.title || '';
+    if (options.confirmText) {
+      this.confirmText = options.confirmText;
+    }
 
     this.bindContext();
     this.createDialog();
@@ -356,12 +360,22 @@ function getFileId(item) {
 }
 
 class CustomShareDialog extends OpDialog {
-  static create() {
-    return new CustomShareDialog();
+  /**
+   * @param {Object} config
+   * @return CustomShareDialog
+   */
+  static create(config = {}) {
+    return new CustomShareDialog(config);
   }
 
-  constructor() {
-    super(template, '自定义分享');
+  /**
+   * @param {Object} config
+   */
+  constructor(config = {}) {
+    super(template, {
+      title: '自定义分享',
+      ...config,
+    });
   }
 
   bindContext() {
@@ -520,12 +534,22 @@ function fixName(name, code) {
 }
 
 class BatchRenameDialog extends OpDialog {
-  static create() {
-    return new BatchRenameDialog();
+  /**
+   * @param {Object} config
+   * @return StandardCodeDialog
+   */
+  static create(config = {}) {
+    return new BatchRenameDialog(config);
   }
 
-  constructor() {
-    super(template$1, '批量重命名');
+  /**
+   * @param {Object} config
+   */
+  constructor(config = {}) {
+    super(template$1, {
+      title: '批量重命名',
+      ...config,
+    });
   }
 
   bindContext() {
@@ -879,17 +903,29 @@ function statusHtml(result) {
   return `<span class="jx-status jx-status-${className}">${result.error}</span>`;
 }
 
+const defaultConfirmCallback = async () => true;
+
 class StandardCodeDialog extends OpDialog {
+  /**
+   * @param {Object} config
+   * @return StandardCodeDialog
+   */
   static create(config) {
     return new StandardCodeDialog(config);
   }
 
-  constructor(config) {
-    super(template$2, '通用提取码');
+  confirmCallback = defaultConfirmCallback;
+
+  constructor(config = {}) {
+    super(template$2, {
+      title: '通用提取码',
+      ...config,
+    });
 
     if (config) {
       this.setText(config.content);
       this.setDirectory(config.directory);
+      this.setConfirmCallback(config.confirmCallback);
       this.forceRefresh = config.forceRefresh || false;
     }
   }
@@ -964,6 +1000,10 @@ class StandardCodeDialog extends OpDialog {
     return this.directory;
   }
 
+  setConfirmCallback(confirmCallback) {
+    this.confirmCallback = confirmCallback || defaultConfirmCallback;
+  }
+
   setDirectory(directory) {
     if (!directory) {
       directory = getCurrentDirectory();
@@ -973,6 +1013,11 @@ class StandardCodeDialog extends OpDialog {
 
   async onConfirm() {
     this.hide();
+
+    // 取消了操作
+    if (!await this.confirmCallback()) {
+      return;
+    }
 
     const ondup = this.ondup.value;
     this.ondupStore.value = ondup;
@@ -1184,6 +1229,7 @@ class ImportOnLoad {
     this.content = content;
 
     this.onConfirm = this.onConfirm.bind(this);
+    this.selectDirectory = this.selectDirectory.bind(this);
 
     this.initTreeSelector().catch(console.error);
   }
@@ -1197,7 +1243,7 @@ class ImportOnLoad {
     this.directoryStore = LocalStore.create(this, 'import_dir');
     this.prevPath = this.directoryStore.value || '/';
 
-    this.selectDirectory();
+    this.confirmFileList();
   }
 
   selectDirectory() {
@@ -1219,15 +1265,30 @@ class ImportOnLoad {
     this.$prevPath = $('<code>').text(this.prevPath);
     this.checkUsePrevPath.$text.append(this.$prevPath);
     this.checkUsePrevPath.root.prop('title', this.prevPath);
+
+    return new Promise(((resolve) => {
+      this.resolveDirectorySelect = resolve;
+    }));
+  }
+
+  confirmFileList() {
+    const { content } = this;
+
+    this.stdCodeDialog = StandardCodeDialog.create({
+      content,
+      forceRefresh: true,
+      confirmText: '选择目标',
+      confirmCallback: this.selectDirectory,
+    });
   }
 
   onConfirm(targetDir) {
     this.fileTreeDialog.hide();
 
-    const { content } = this;
     const directory = this.checkUsePrevPath.checked ? this.prevPath : targetDir;
     this.directoryStore.value = directory;
-    StandardCodeDialog.create({ directory, content, forceRefresh: true });
+    this.stdCodeDialog.setDirectory(directory);
+    this.resolveDirectorySelect(true);
   }
 }
 

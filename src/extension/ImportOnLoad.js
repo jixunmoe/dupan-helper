@@ -16,6 +16,7 @@ export default class ImportOnLoad {
     this.content = content;
 
     this.onConfirm = this.onConfirm.bind(this);
+    this.selectDirectory = this.selectDirectory.bind(this);
 
     this.initTreeSelector().catch(console.error);
   }
@@ -29,7 +30,7 @@ export default class ImportOnLoad {
     this.directoryStore = LocalStore.create(this, 'import_dir');
     this.prevPath = this.directoryStore.value || '/';
 
-    this.selectDirectory();
+    this.confirmFileList();
   }
 
   selectDirectory() {
@@ -51,14 +52,29 @@ export default class ImportOnLoad {
     this.$prevPath = $('<code>').text(this.prevPath);
     this.checkUsePrevPath.$text.append(this.$prevPath);
     this.checkUsePrevPath.root.prop('title', this.prevPath);
+
+    return new Promise(((resolve) => {
+      this.resolveDirectorySelect = resolve;
+    }));
+  }
+
+  confirmFileList() {
+    const { content } = this;
+
+    this.stdCodeDialog = StandardCodeDialog.create({
+      content,
+      forceRefresh: true,
+      confirmText: '选择目标',
+      confirmCallback: this.selectDirectory,
+    });
   }
 
   onConfirm(targetDir) {
     this.fileTreeDialog.hide();
 
-    const { content } = this;
     const directory = this.checkUsePrevPath.checked ? this.prevPath : targetDir;
     this.directoryStore.value = directory;
-    StandardCodeDialog.create({ directory, content, forceRefresh: true });
+    this.stdCodeDialog.setDirectory(directory);
+    this.resolveDirectorySelect(true);
   }
 }

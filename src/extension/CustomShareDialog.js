@@ -41,12 +41,22 @@ function getFileId(item) {
 }
 
 export default class CustomShareDialog extends OpDialog {
-  static create() {
-    return new CustomShareDialog();
+  /**
+   * @param {Object} config
+   * @return CustomShareDialog
+   */
+  static create(config = {}) {
+    return new CustomShareDialog(config);
   }
 
-  constructor() {
-    super(template, '自定义分享');
+  /**
+   * @param {Object} config
+   */
+  constructor(config = {}) {
+    super(template, {
+      title: '自定义分享',
+      ...config,
+    });
   }
 
   bindContext() {

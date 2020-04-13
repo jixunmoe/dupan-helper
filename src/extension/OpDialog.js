@@ -8,9 +8,13 @@ export default class OpDialog {
     return LocalStore.create(this, key);
   }
 
-  constructor(template, title) {
-    this.title = title;
+  constructor(template, options = {}) {
     this.root = $(template);
+
+    this.title = options.title || '';
+    if (options.confirmText) {
+      this.confirmText = options.confirmText;
+    }
 
     this.bindContext();
     this.createDialog();

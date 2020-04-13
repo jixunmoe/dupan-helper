@@ -11,17 +11,29 @@ import { refreshFileListView } from '../baidu/getMessage';
 import { infoDialog } from '../baidu/getDialog';
 import statusHtml from '../components/statusHtml';
 
+const defaultConfirmCallback = async () => true;
+
 export default class StandardCodeDialog extends OpDialog {
+  /**
+   * @param {Object} config
+   * @return StandardCodeDialog
+   */
   static create(config) {
     return new StandardCodeDialog(config);
   }
 
-  constructor(config) {
-    super(template, '通用提取码');
+  confirmCallback = defaultConfirmCallback;
+
+  constructor(config = {}) {
+    super(template, {
+      title: '通用提取码',
+      ...config,
+    });
 
     if (config) {
       this.setText(config.content);
       this.setDirectory(config.directory);
+      this.setConfirmCallback(config.confirmCallback);
       this.forceRefresh = config.forceRefresh || false;
     }
   }
@@ -96,6 +108,10 @@ export default class StandardCodeDialog extends OpDialog {
     return this.directory;
   }
 
+  setConfirmCallback(confirmCallback) {
+    this.confirmCallback = confirmCallback || defaultConfirmCallback;
+  }
+
   setDirectory(directory) {
     if (!directory) {
       directory = getCurrentDirectory();
@@ -105,6 +121,11 @@ export default class StandardCodeDialog extends OpDialog {
 
   async onConfirm() {
     this.hide();
+
+    // 取消了操作
+    if (!await this.confirmCallback()) {
+      return;
+    }
 
     const ondup = this.ondup.value;
     this.ondupStore.value = ondup;

@@ -10,11 +10,14 @@ globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
   entryPoint: false
+parser: "babel-eslint"
 parserOptions:
   ecmaVersion: 2018
   sourceType: module
 rules:
+  max-len: ['error', { code: 120 }]
   no-console: off
+  no-continue: off
   prefer-rest-params: off
   no-underscore-dangle: off
   no-param-reassign: off

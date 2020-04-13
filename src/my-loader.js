@@ -6,16 +6,23 @@ const hooks = new Map();
 
 function fakeRequire(module) {
   // console.info('%s Load module: %s', INFO, module);
+  const result = oRequire.apply(this, arguments);
   const moduleHook = hooks.get(module);
   if (moduleHook) {
     moduleHook();
     hooks.delete(module);
   }
-  return oRequire.apply(this, arguments);
+  return result;
 }
 
 export function load(module) {
   return oRequire.call(window, module);
+}
+
+export function loadAsync(module) {
+  return new Promise(((resolve) => {
+    fakeRequire.async(module, resolve);
+  }));
 }
 
 export function hook(module, fn) {

@@ -1,19 +1,11 @@
 import { confirmDialog } from '../baidu/getDialog';
 import LocalStore from '../utils/LocalStore';
 
-const PREFIX = '__jx_';
-
 export default class OpDialog {
-  get id() {
-    return this.constructor.name;
-  }
-
-  getNamespacedKey(key) {
-    return `${PREFIX}_${this.id}_${key}`;
-  }
+  confirmText = '确定';
 
   createStore(key) {
-    return new LocalStore(this.getNamespacedKey(key));
+    return LocalStore.create(this, key);
   }
 
   constructor(template, title) {
@@ -36,6 +28,7 @@ export default class OpDialog {
     this.dialog = confirmDialog({
       title: this.title,
       body: this.root,
+      sureText: this.confirmText,
       onSure: this.onConfirm,
       onCancel: this.onCancel,
     });

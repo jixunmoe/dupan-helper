@@ -61,16 +61,23 @@ const hooks = new Map();
 
 function fakeRequire(module) {
   // console.info('%s Load module: %s', INFO, module);
+  const result = oRequire.apply(this, arguments);
   const moduleHook = hooks.get(module);
   if (moduleHook) {
     moduleHook();
     hooks.delete(module);
   }
-  return oRequire.apply(this, arguments);
+  return result;
 }
 
 function load(module) {
   return oRequire.call(window, module);
+}
+
+function loadAsync(module) {
+  return new Promise(((resolve) => {
+    fakeRequire.async(module, resolve);
+  }));
 }
 
 function hook(module, fn) {
@@ -229,6 +236,8 @@ function escapeHtml(text) {
 
 var template = "<div>\n  <p><label>请输入提取码: <input id=\"jx_shareKey\" class=\"jx-input\" style=\"width: 6em\"/></label></p>\n  <p class=\"jx_errmsg jx_c_warn jx_hide\">无效的提取码, 脚本将随机生成一个分享代码 &hellip;</p>\n</div>\n\n<div class=\"jx_hide\">\n  <p><label>分享地址: <input id=\"jx_shortUrl\" class=\"jx-input\" style=\"width: 20em\" readonly/></label></p>\n  <p><label>提取码: <input id=\"jx_shareCode\" class=\"jx-input\" style=\"width: 5em; text-align: center\" readonly/></label></p>\n\n  <p style=\"text-align: left\">\n    <label for=\"jx_dlboxCode\">投稿代码:</label><br/>\n    <textarea readonly id=\"jx_dlboxCode\" class=\"jx jx-input\"></textarea>\n  </p>\n</div>\n";
 
+const PREFIX = '__jx_';
+
 class LocalStore {
   constructor(id) {
     this.id = id;
@@ -241,21 +250,17 @@ class LocalStore {
   set value(value) {
     return localStorage.setItem(this.id, value);
   }
+
+  static create(instance, key) {
+    return new LocalStore(`${PREFIX}_${instance.constructor.name}_${key}`);
+  }
 }
 
-const PREFIX = '__jx_';
-
 class OpDialog {
-  get id() {
-    return this.constructor.name;
-  }
-
-  getNamespacedKey(key) {
-    return `${PREFIX}_${this.id}_${key}`;
-  }
+  confirmText = '确定';
 
   createStore(key) {
-    return new LocalStore(this.getNamespacedKey(key));
+    return LocalStore.create(this, key);
   }
 
   constructor(template, title) {
@@ -278,6 +283,7 @@ class OpDialog {
     this.dialog = confirmDialog({
       title: this.title,
       body: this.root,
+      sureText: this.confirmText,
       onSure: this.onConfirm,
       onCancel: this.onCancel,
     });
@@ -431,7 +437,8 @@ class CustomShareDialog extends OpDialog {
     this.root.toggleClass('jx_hide');
 
     const title = fixCode(sharedItems[0].server_filename) + (sharedItems.length === 1 ? '' : ' 等文件');
-    const code = `[dlbox title="${escapeHtml(title)}" from="浩瀚的宇宙" time="${makeDate(new Date())}" info="提取：${escapeHtml(key)}" link1="度娘|${url}"][/dlbox]]`;
+    const code = `[dlbox title="${escapeHtml(title)}" from="浩瀚的宇宙" time="${makeDate(new Date())}" `
+      + `info="提取：${escapeHtml(key)}" link1="度娘|${url}"][/dlbox]]`;
 
     this.$('#jx_dlboxCode').val(code);
 
@@ -856,12 +863,17 @@ function statusHtml(result) {
 }
 
 class StandardCodeDialog extends OpDialog {
-  static create() {
-    return new StandardCodeDialog();
+  static create(config) {
+    return new StandardCodeDialog(config);
   }
 
-  constructor() {
+  constructor(config) {
     super(template$2, '通用提取码');
+
+    if (config) {
+      this.setText(config.content);
+      this.setDirectory(config.directory);
+    }
   }
 
   bindContext() {
@@ -870,6 +882,7 @@ class StandardCodeDialog extends OpDialog {
     this.updatePreview = this.updatePreview.bind(this);
 
     this.parser = new DuParser();
+    this.directory = getCurrentDirectory();
   }
 
   bootstrap() {
@@ -901,7 +914,7 @@ class StandardCodeDialog extends OpDialog {
   }
 
   updatePreview() {
-    const code = this.jx_code.val();
+    const code = this.getText();
 
     this.parser.reset();
     this.parser.parse(code);
@@ -920,6 +933,26 @@ class StandardCodeDialog extends OpDialog {
     }
   }
 
+  setText(content) {
+    this.jx_code.val(content || '');
+    this.updatePreview();
+  }
+
+  getText() {
+    return this.jx_code.val();
+  }
+
+  getDirectory() {
+    return this.directory;
+  }
+
+  setDirectory(directory) {
+    if (!directory) {
+      directory = getCurrentDirectory();
+    }
+    this.directory = directory;
+  }
+
   async onConfirm() {
     this.hide();
 
@@ -936,7 +969,7 @@ class StandardCodeDialog extends OpDialog {
         autoClose: false,
       });
 
-      const resp = await rapidUpload(getCurrentDirectory(), file, ondup);
+      const resp = await rapidUpload(this.getDirectory(), file, ondup);
       file.success = resp.errno === 0;
       file.errno = resp.errno;
       file.error = resp.error;
@@ -991,8 +1024,207 @@ function registerPlugin() {
   });
 }
 
+function compose(...fns) {
+  return (...args) => fns.reduce((result, fn) => fn.apply(fn, result), args);
+}
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+// If obj.hasOwnProperty has been overridden, then calling
+// obj.hasOwnProperty(prop) will break.
+// See: https://github.com/joyent/node/issues/1707
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+var isArray = Array.isArray || function (xs) {
+  return Object.prototype.toString.call(xs) === '[object Array]';
+};
+
+function parse(qs, sep, eq, options) {
+  sep = sep || '&';
+  eq = eq || '=';
+  var obj = {};
+
+  if (typeof qs !== 'string' || qs.length === 0) {
+    return obj;
+  }
+
+  var regexp = /\+/g;
+  qs = qs.split(sep);
+
+  var maxKeys = 1000;
+  if (options && typeof options.maxKeys === 'number') {
+    maxKeys = options.maxKeys;
+  }
+
+  var len = qs.length;
+  // maxKeys <= 0 means that we should not limit keys count
+  if (maxKeys > 0 && len > maxKeys) {
+    len = maxKeys;
+  }
+
+  for (var i = 0; i < len; ++i) {
+    var x = qs[i].replace(regexp, '%20'),
+        idx = x.indexOf(eq),
+        kstr, vstr, k, v;
+
+    if (idx >= 0) {
+      kstr = x.substr(0, idx);
+      vstr = x.substr(idx + 1);
+    } else {
+      kstr = x;
+      vstr = '';
+    }
+
+    k = decodeURIComponent(kstr);
+    v = decodeURIComponent(vstr);
+
+    if (!hasOwnProperty(obj, k)) {
+      obj[k] = v;
+    } else if (isArray(obj[k])) {
+      obj[k].push(v);
+    } else {
+      obj[k] = [obj[k], v];
+    }
+  }
+
+  return obj;
+}
+
+const search = parse(window.location.search.slice(1).replace(/\+/g, '%2b'));
+
+function hasQuery(name) {
+  return Object.prototype.hasOwnProperty.call(search, name);
+}
+
+function getQuery(name) {
+  return search[name]
+    || 'YmRwYW46Ly80NENNTURIamdJMHVjbUZ5ZkRVM05EQTNNVFV6Tm54aU5tRTFOVGN6WmprMU1URXlaV1EyTm1VMU56RTFaRFJsTURRNE16SXlabnh'
+    + 'sWlRBeU9USmxObVkyWXpVeU16QTRaR05qWlRNM1pqWmxOell5TXpVeU13PT0KYmRwYW46Ly80NENNTURMamdJMHVjbUZ5ZkRreU1ETXpOamszTTN'
+    + '3Mk5qWmxORFF6TlRKa01tUTFNVGMzWXprM01UVXdZemhtTVRjMVl6TTJabnhsTW1FNU5UVTVZamxsWVdFMk1EUXdNakJqWVRFd1pXUm1aVFJoTkd'
+    + 'WbFlnPT0KYmRwYW46Ly80NENNTURQamdJMHVjbUZ5ZkRVME5UUTVNekl3TjN3d056QTFORFJoWkRNeU5UQXlNR0U1TVdZelpqSmtNVGswTUdSbFp'
+    + 'qVTRNM3cxWTJNMU16Vm1OVEZqTWpVM016STVPRGMzTUdRNVl6TmpNV0U0WlRCaVpRPT0KYmRwYW46Ly80NENNTURIamdJMHVjbUZ5ZkRVM05EQTN'
+    + 'NVFV6Tm54aU5tRTFOVGN6WmprMU1URXlaV1EyTm1VMU56RTFaRFJsTURRNE16SXlabnhsWlRBeU9USmxObVkyWXpVeU16QTRaR05qWlRNM1pqWmx'
+    + 'Oell5TXpVeU13PT0KYmRwYW46Ly80NENNTURMamdJMHVjbUZ5ZkRreU1ETXpOamszTTN3Mk5qWmxORFF6TlRKa01tUTFNVGMzWXprM01UVXdZemh'
+    + 'tTVRjMVl6TTJabnhsTW1FNU5UVTVZamxsWVdFMk1EUXdNakJqWVRFd1pXUm1aVFJoTkdWbFlnPT0KYmRwYW46Ly80NENNTURQamdJMHVjbUZ5ZkR'
+    + 'VME5UUTVNekl3TjN3d056QTFORFJoWkRNeU5UQXlNR0U1TVdZelpqSmtNVGswTUdSbFpqVTRNM3cxWTJNMU16Vm1OVEZqTWpVM016STVPRGMzTUd'
+    + 'RNVl6TmpNV0U0WlRCaVpRPT0=';
+}
+
+var css_248z$2 = ".jx-prev-path > span {\n    white-space: nowrap;\n    display: flex;\n    padding: 0 12px;\n}\n\n.jx-prev-path code {\n    padding-left: 0.5em;\n    flex-grow: 1;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n";
+styleInject(css_248z$2);
+
+var css_248z$3 = ".jx-checkbox {\n    display: none;\n}\n\n.jx-label {\n    cursor: pointer;\n}\n\n.jx-label span {\n    display: flex;\n}\n\n.jx-checkbox + span::before {\n    content: '';\n    padding-left: 20px;\n    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAAOBAMAAACWQvIuAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAwUExURQAAAP///8rKyujt8TWJ4ViV2/b29srb7vLy8m2l4fX2+K3L6lKt8u7y93/G+Pn5+VodYkgAAAABdFJOUwBA5thmAAAAbElEQVQY02NQggAGZAATUzYGASMUOZiYRqIgEAihyIHFLIQY1AQx5UBiUjOFGBSxyIHElrpswi5nLCgf4roIq5yyy8WlLgexm6nt4h7iKYjDvhIXl4O45MRdPAVxyQmWPMQtJyGIWw4ihiesAfWzHJ0JZlnhAAAAAElFTkSuQmCC') no-repeat left;\n}\n\n.jx-checkbox:checked + span::before {\n    background-position-x: -40px;\n}\n";
+styleInject(css_248z$3);
+
+class Checkbox {
+  constructor(content, className) {
+    this.root = $('<label class="jx-label">').addClass(className);
+    this.$input = $('<input class="jx-checkbox" type="checkbox" />');
+    this.$text = $('<span>');
+
+    if (typeof content === 'string') {
+      this.$text.text(content);
+    } else {
+      this.$text.append(content);
+    }
+
+    this.root.append(this.$input).append(this.$text);
+  }
+
+  get checked() {
+    return this.$input.prop('checked');
+  }
+
+  set checked(checked) {
+    return this.$input.prop('checked', Boolean(checked));
+  }
+
+  appendTo(target) {
+    this.root.appendTo(target);
+  }
+}
+
+class ImportOnLoad {
+  static create(content) {
+    return new ImportOnLoad(content);
+  }
+
+  constructor(content = '') {
+    this.content = content;
+
+    this.onConfirm = this.onConfirm.bind(this);
+
+    this.initTreeSelector().catch(console.error);
+  }
+
+  async initTreeSelector() {
+    // 百度的这个依赖没处理好啊，还得我手动照着顺序来加载
+    await loadAsync('disk-system:widget/system/baseService/shareDir/shareDirManager.js');
+    this.fileTreeDialog = await loadAsync('disk-system:widget/system/uiService/fileTreeDialog/fileTreeDialog.js');
+
+    this.ui = getContext().ui;
+    this.directoryStore = LocalStore.create(this, 'import_dir');
+    this.prevPath = this.directoryStore.value;
+
+    this.selectDirectory();
+  }
+
+  selectDirectory() {
+    this.dirSelectDialog = this.fileTreeDialog.show({
+      title: '导入至…',
+      confirm: this.onConfirm,
+      isZip: true,
+      showShareDir: false,
+      path: '/',
+    });
+
+    this.$dialogBody = this.dirSelectDialog.dialog.$dialog.find(getDialog().QUERY.dialogBody);
+    this.checkUsePrevPath = new Checkbox('使用上次储存的位置', 'jx-prev-path');
+    this.checkUsePrevPath.appendTo(this.$dialogBody);
+    this.$prevPath = $('<code>').text(this.prevPath);
+    this.checkUsePrevPath.$text.append(this.$prevPath);
+    this.checkUsePrevPath.root.prop('title', this.prevPath);
+  }
+
+  onConfirm(targetDir) {
+    this.fileTreeDialog.hide();
+
+    const { content } = this;
+    const directory = this.checkUsePrevPath.checked ? this.prevPath : targetDir;
+    this.directoryStore.value = directory;
+    StandardCodeDialog.create({ directory, content });
+  }
+}
+
+function initialiseQueryLink() {
+  if (hasQuery('bdlink')) {
+    ImportOnLoad.create(decodeBase64(getQuery('bdlink')));
+  }
+}
+
 hook('disk-system:widget/system/uiRender/menu/listMenu.js', injectMenu);
-hook('system-core:pluginHub/register/register.js', registerPlugin);
+hook('system-core:pluginHub/register/register.js', compose(registerPlugin, initialiseQueryLink));
 
 // ESC 将关闭所有漂浮窗口
 document.addEventListener('keyup', (e) => {

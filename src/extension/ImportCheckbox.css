@@ -1,0 +1,12 @@
+.jx-prev-path > span {
+    white-space: nowrap;
+    display: flex;
+    padding: 0 12px;
+}
+
+.jx-prev-path code {
+    padding-left: 0.5em;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

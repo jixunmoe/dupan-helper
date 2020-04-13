@@ -1,0 +1,21 @@
+.jx-checkbox {
+    display: none;
+}
+
+.jx-label {
+    cursor: pointer;
+}
+
+.jx-label span {
+    display: flex;
+}
+
+.jx-checkbox + span::before {
+    content: '';
+    padding-left: 20px;
+    background: url('./checkbox.png') no-repeat left;
+}
+
+.jx-checkbox:checked + span::before {
+    background-position-x: -40px;
+}

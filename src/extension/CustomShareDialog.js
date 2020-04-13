@@ -122,7 +122,8 @@ export default class CustomShareDialog extends OpDialog {
     this.root.toggleClass('jx_hide');
 
     const title = fixCode(sharedItems[0].server_filename) + (sharedItems.length === 1 ? '' : ' 等文件');
-    const code = `[dlbox title="${escapeHtml(title)}" from="浩瀚的宇宙" time="${makeDate(new Date())}" info="提取：${escapeHtml(key)}" link1="度娘|${url}"][/dlbox]]`;
+    const code = `[dlbox title="${escapeHtml(title)}" from="浩瀚的宇宙" time="${makeDate(new Date())}" `
+      + `info="提取：${escapeHtml(key)}" link1="度娘|${url}"][/dlbox]]`;
 
     this.$('#jx_dlboxCode').val(code);
 

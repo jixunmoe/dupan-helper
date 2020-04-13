@@ -12,12 +12,17 @@ import { infoDialog } from '../baidu/getDialog';
 import statusHtml from '../components/statusHtml';
 
 export default class StandardCodeDialog extends OpDialog {
-  static create() {
-    return new StandardCodeDialog();
+  static create(config) {
+    return new StandardCodeDialog(config);
   }
 
-  constructor() {
+  constructor(config) {
     super(template, '通用提取码');
+
+    if (config) {
+      this.setText(config.content);
+      this.setDirectory(config.directory);
+    }
   }
 
   bindContext() {
@@ -26,6 +31,7 @@ export default class StandardCodeDialog extends OpDialog {
     this.updatePreview = this.updatePreview.bind(this);
 
     this.parser = new DuParser();
+    this.directory = getCurrentDirectory();
   }
 
   bootstrap() {
@@ -57,7 +63,7 @@ export default class StandardCodeDialog extends OpDialog {
   }
 
   updatePreview() {
-    const code = this.jx_code.val();
+    const code = this.getText();
 
     this.parser.reset();
     this.parser.parse(code);
@@ -76,6 +82,26 @@ export default class StandardCodeDialog extends OpDialog {
     }
   }
 
+  setText(content) {
+    this.jx_code.val(content || '');
+    this.updatePreview();
+  }
+
+  getText() {
+    return this.jx_code.val();
+  }
+
+  getDirectory() {
+    return this.directory;
+  }
+
+  setDirectory(directory) {
+    if (!directory) {
+      directory = getCurrentDirectory();
+    }
+    this.directory = directory;
+  }
+
   async onConfirm() {
     this.hide();
 
@@ -92,7 +118,7 @@ export default class StandardCodeDialog extends OpDialog {
         autoClose: false,
       });
 
-      const resp = await rapidUpload(getCurrentDirectory(), file, ondup);
+      const resp = await rapidUpload(this.getDirectory(), file, ondup);
       file.success = resp.errno === 0;
       file.errno = resp.errno;
       file.error = resp.error;

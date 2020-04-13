@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         仓库用度盘投稿助手
 // @namespace    moe.jixun.dupan.galacg
-// @version      1.2.3
+// @version      1.3.0
 // @description  简易功能增强, 方便仓库投稿用
 // @author       Jixun<https://jixun.moe/>
 
@@ -1118,17 +1118,7 @@ function hasQuery(name) {
 }
 
 function getQuery(name) {
-  return search[name]
-    || 'YmRwYW46Ly80NENNTURIamdJMHVjbUZ5ZkRVM05EQTNNVFV6Tm54aU5tRTFOVGN6WmprMU1URXlaV1EyTm1VMU56RTFaRFJsTURRNE16SXlabnh'
-    + 'sWlRBeU9USmxObVkyWXpVeU16QTRaR05qWlRNM1pqWmxOell5TXpVeU13PT0KYmRwYW46Ly80NENNTURMamdJMHVjbUZ5ZkRreU1ETXpOamszTTN'
-    + '3Mk5qWmxORFF6TlRKa01tUTFNVGMzWXprM01UVXdZemhtTVRjMVl6TTJabnhsTW1FNU5UVTVZamxsWVdFMk1EUXdNakJqWVRFd1pXUm1aVFJoTkd'
-    + 'WbFlnPT0KYmRwYW46Ly80NENNTURQamdJMHVjbUZ5ZkRVME5UUTVNekl3TjN3d056QTFORFJoWkRNeU5UQXlNR0U1TVdZelpqSmtNVGswTUdSbFp'
-    + 'qVTRNM3cxWTJNMU16Vm1OVEZqTWpVM016STVPRGMzTUdRNVl6TmpNV0U0WlRCaVpRPT0KYmRwYW46Ly80NENNTURIamdJMHVjbUZ5ZkRVM05EQTN'
-    + 'NVFV6Tm54aU5tRTFOVGN6WmprMU1URXlaV1EyTm1VMU56RTFaRFJsTURRNE16SXlabnhsWlRBeU9USmxObVkyWXpVeU16QTRaR05qWlRNM1pqWmx'
-    + 'Oell5TXpVeU13PT0KYmRwYW46Ly80NENNTURMamdJMHVjbUZ5ZkRreU1ETXpOamszTTN3Mk5qWmxORFF6TlRKa01tUTFNVGMzWXprM01UVXdZemh'
-    + 'tTVRjMVl6TTJabnhsTW1FNU5UVTVZamxsWVdFMk1EUXdNakJqWVRFd1pXUm1aVFJoTkdWbFlnPT0KYmRwYW46Ly80NENNTURQamdJMHVjbUZ5ZkR'
-    + 'VME5UUTVNekl3TjN3d056QTFORFJoWkRNeU5UQXlNR0U1TVdZelpqSmtNVGswTUdSbFpqVTRNM3cxWTJNMU16Vm1OVEZqTWpVM016STVPRGMzTUd'
-    + 'RNVl6TmpNV0U0WlRCaVpRPT0=';
+  return search[name];
 }
 
 var css_248z$2 = ".jx-prev-path > span {\n    white-space: nowrap;\n    display: flex;\n    padding: 0 12px;\n}\n\n.jx-prev-path code {\n    padding-left: 0.5em;\n    flex-grow: 1;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n";
@@ -1185,7 +1175,7 @@ class ImportOnLoad {
 
     this.ui = getContext().ui;
     this.directoryStore = LocalStore.create(this, 'import_dir');
-    this.prevPath = this.directoryStore.value;
+    this.prevPath = this.directoryStore.value || '/';
 
     this.selectDirectory();
   }

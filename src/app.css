@@ -124,8 +124,12 @@ textarea.jx{
 
 .g-button-violet .text,
 .g-button-violet .icon,
-.g-button-violet:hover .icon {
+.g-button.g-button-violet:hover .icon {
     color: #fff;
+}
+
+.g-button.g-button-violet:hover .icon {
+    opacity: 0.9;
 }
 
 .g-button-violet {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         仓库用度盘投稿助手
 // @namespace    moe.jixun.dupan.galacg
-// @version      1.3.8
+// @version      1.3.9
 // @description  简易功能增强, 方便仓库投稿用
 // @author       Jixun<https://jixun.moe/>
 
@@ -1173,14 +1173,22 @@ function parseQueryString(qs, sep, eq, options) {
   return obj;
 }
 
-const search = parseQueryString(window.location.search.slice(1).replace(/\+/g, '%2b'));
+class Query {
+  constructor() {
+    this.search = {};
+  }
 
-function hasQuery(name) {
-  return Object.prototype.hasOwnProperty.call(search, name);
-}
+  parse(source) {
+    this.search = parseQueryString(source.slice(1).replace(/\+/g, '%2b'));
+  }
 
-function getQuery(name) {
-  return search[name];
+  has(name) {
+    return Object.prototype.hasOwnProperty.call(this.search, name);
+  }
+
+  get(name) {
+    return this.search[name];
+  }
 }
 
 var css_248z$2 = ".jx-prev-path > span {\n    white-space: nowrap;\n    display: flex;\n    padding: 0 12px;\n}\n\n.jx-prev-path code {\n    padding-left: 0.5em;\n    flex-grow: 1;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n";
@@ -1296,9 +1304,19 @@ class ImportOnLoad {
   }
 }
 
+const KEY_BDLINK = 'bdlink';
+const { search, hash } = window.location;
+
 function initialiseQueryLink() {
-  if (hasQuery('bdlink')) {
-    ImportOnLoad.create(decodeBase64(getQuery('bdlink')));
+  const query = new Query();
+
+  query.parse(search);
+  if (!query.has(KEY_BDLINK)) {
+    query.parse(hash);
+  }
+
+  if (query.has(KEY_BDLINK)) {
+    ImportOnLoad.create(decodeBase64(query.get(KEY_BDLINK)));
   }
 }
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         仓库用度盘投稿助手
 // @namespace    moe.jixun.dupan.galacg
-// @version      1.3.9
+// @version      1.3.10
 // @description  简易功能增强, 方便仓库投稿用
 // @author       Jixun<https://jixun.moe/>
 
@@ -738,6 +738,13 @@ function decodeBase64(str) {
 
 const trim = (str) => String.prototype.trim.call(str);
 
+/**
+ * 百度网盘用的(非官方)标准提取码。
+ * 支持解析：
+ * 1. 游侠的 `BDLINK` 提取码
+ * 2. 我的“标准提取码”
+ * 3. PanDownload 的 `bdpan://` 协议。
+ */
 class DuParser {
   constructor() {
     this.reset();
@@ -748,12 +755,19 @@ class DuParser {
     this.versions = new Set();
   }
 
+  /**
+   * 判断地址类型并解析。
+   * @param url
+   */
   parse(url) {
+    // 游侠的格式是多行，不好判断结束位置。
+    // 所以一次只能解析一条数据。
     if (url.indexOf('BDLINK') === 0) {
       this.parseAli(url);
       return;
     }
 
+    // 其他两个格式一行一个文件信息。
     const links = url.split('\n').map(trim);
     for (const link of links) {
       if (link.startsWith('bdpan://')) {
@@ -1179,7 +1193,7 @@ class Query {
   }
 
   parse(source) {
-    this.search = parseQueryString(source.slice(1).replace(/\+/g, '%2b'));
+    this.search = parseQueryString(source.replace(/^(#\??|\?)/g, '').replace(/\+/g, '%2b'));
   }
 
   has(name) {

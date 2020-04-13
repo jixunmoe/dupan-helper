@@ -8,7 +8,7 @@
     margin: 0 0 0 10px;
     text-decoration: none;
     border: 1px solid #AAA;
-    padding: 0px 20px;
+    padding: 0 20px;
     height: 26px;
     border-radius: 2px;
 
@@ -27,12 +27,10 @@
 }
 .jx-input {
     margin: 9px 0;
-    _margin: 7px 0;
     padding: 0 0 0 5px;
     width: 200px;
     height: 24px;
     vertical-align: middle;
-    border: 1px solid #3b8cff;
     border: 1px solid rgba(58,140,255,.3);
     background: #fff;
     border-radius: 2px;
@@ -122,4 +120,20 @@ textarea.jx{
 
 .dialog-header-title > .select-text {
     pointer-events: none;
+}
+
+.g-button-violet .text,
+.g-button-violet .icon,
+.g-button-violet:hover .icon {
+    color: #fff;
+}
+
+.g-button-violet {
+    background: #A238FF;
+    border: 1px solid #A238FF;
+}
+
+.g-button-violet:hover {
+    background: #AE52FF;
+    border: 1px solid #AE52FF
 }

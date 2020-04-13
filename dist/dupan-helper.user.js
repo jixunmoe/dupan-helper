@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         仓库用度盘投稿助手
 // @namespace    moe.jixun.dupan.galacg
-// @version      1.3.6
+// @version      1.3.7
 // @description  简易功能增强, 方便仓库投稿用
 // @author       Jixun<https://jixun.moe/>
 
@@ -49,7 +49,7 @@ function styleInject(css, ref) {
   }
 }
 
-var css_248z = ".jx_btn {\n    background: #fefefe;\n    background: linear-gradient(to bottom,  #fefefe 0%,#f2f2f2 88%);\n\n    display: inline-block;\n    line-height: 25px;\n    vertical-align: middle;\n    margin: 0 0 0 10px;\n    text-decoration: none;\n    border: 1px solid #AAA;\n    padding: 0px 20px;\n    height: 26px;\n    border-radius: 2px;\n\n    min-width: 3em;\n    text-align: center;\n}\n.jx_btn, .jx_btn:hover, .jx_btn:focus {\n    color: #666;\n}\n.jx_btn:active {\n    color: #06C;\n    background: #e3e3e3;\n    background: -moz-linear-gradient(top,  #e3e3e3 0%, #f7f7f7 12%);\n    background: -webkit-linear-gradient(top,  #e3e3e3 0%,#f7f7f7 12%);\n    background: linear-gradient(to bottom,  #e3e3e3 0%,#f7f7f7 12%);\n}\n.jx-input {\n    margin: 9px 0;\n    _margin: 7px 0;\n    padding: 0 0 0 5px;\n    width: 200px;\n    height: 24px;\n    vertical-align: middle;\n    border: 1px solid #3b8cff;\n    border: 1px solid rgba(58,140,255,.3);\n    background: #fff;\n    border-radius: 2px;\n}\n\n.jx_hide   { display: none }\n.jx_c_warn { color: red }\n\n.jx_list {\n    text-align: left;\n    max-height: 5.5em;\n    overflow-y: scroll;\n    overflow-x: hidden;\n    line-height: 1;\n    padding: .2em;\n    margin-bottom: .5em;\n}\n\n/*\n.jx_list:not(:empty) {\n  border: 1px solid #ddd;\n}\n*/\n\n.jx_list > li {\n    display: flex;\n    white-space: nowrap;\n    line-height: 1.3;\n}\n\n.jx_list .name {\n    color: black;\n\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.jx_list .size {\n    color: #777;\n\n    flex-grow: 1;\n}\n\n.save-complete-details {\n    max-height: 30em;\n}\n\n.jx-status {\n    padding-left: 0.25em;\n}\n\n.jx-status-success {\n    color: green;\n}\n\n.jx-status-skip {\n    color: gray;\n}\n\n.jx-status-fail {\n    color: red;\n}\n\ntextarea.jx{\n    width: 100%;\n    min-height: 5em;\n    line-height: 1;\n}\n\n.jx-form-options {\n    display: flex;\n    justify-content: left;\n}\n\n.jx-form-options > label {\n    display: inline-flex;\n    align-items: center;\n}\n\n.jx-form-options > label + label {\n    margin-left: 0.5em;\n}\n\n.jx-form-options > label > input {\n    margin-right: 0.25em;\n}\n\n.dialog-header-title > .select-text {\n    pointer-events: none;\n}\n";
+var css_248z = ".jx_btn {\n    background: #fefefe;\n    background: linear-gradient(to bottom,  #fefefe 0%,#f2f2f2 88%);\n\n    display: inline-block;\n    line-height: 25px;\n    vertical-align: middle;\n    margin: 0 0 0 10px;\n    text-decoration: none;\n    border: 1px solid #AAA;\n    padding: 0 20px;\n    height: 26px;\n    border-radius: 2px;\n\n    min-width: 3em;\n    text-align: center;\n}\n.jx_btn, .jx_btn:hover, .jx_btn:focus {\n    color: #666;\n}\n.jx_btn:active {\n    color: #06C;\n    background: #e3e3e3;\n    background: -moz-linear-gradient(top,  #e3e3e3 0%, #f7f7f7 12%);\n    background: -webkit-linear-gradient(top,  #e3e3e3 0%,#f7f7f7 12%);\n    background: linear-gradient(to bottom,  #e3e3e3 0%,#f7f7f7 12%);\n}\n.jx-input {\n    margin: 9px 0;\n    padding: 0 0 0 5px;\n    width: 200px;\n    height: 24px;\n    vertical-align: middle;\n    border: 1px solid rgba(58,140,255,.3);\n    background: #fff;\n    border-radius: 2px;\n}\n\n.jx_hide   { display: none }\n.jx_c_warn { color: red }\n\n.jx_list {\n    text-align: left;\n    max-height: 5.5em;\n    overflow-y: scroll;\n    overflow-x: hidden;\n    line-height: 1;\n    padding: .2em;\n    margin-bottom: .5em;\n}\n\n/*\n.jx_list:not(:empty) {\n  border: 1px solid #ddd;\n}\n*/\n\n.jx_list > li {\n    display: flex;\n    white-space: nowrap;\n    line-height: 1.3;\n}\n\n.jx_list .name {\n    color: black;\n\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.jx_list .size {\n    color: #777;\n\n    flex-grow: 1;\n}\n\n.save-complete-details {\n    max-height: 30em;\n}\n\n.jx-status {\n    padding-left: 0.25em;\n}\n\n.jx-status-success {\n    color: green;\n}\n\n.jx-status-skip {\n    color: gray;\n}\n\n.jx-status-fail {\n    color: red;\n}\n\ntextarea.jx{\n    width: 100%;\n    min-height: 5em;\n    line-height: 1;\n}\n\n.jx-form-options {\n    display: flex;\n    justify-content: left;\n}\n\n.jx-form-options > label {\n    display: inline-flex;\n    align-items: center;\n}\n\n.jx-form-options > label + label {\n    margin-left: 0.5em;\n}\n\n.jx-form-options > label > input {\n    margin-right: 0.25em;\n}\n\n.dialog-header-title > .select-text {\n    pointer-events: none;\n}\n\n.g-button-violet .text,\n.g-button-violet .icon,\n.g-button-violet:hover .icon {\n    color: #fff;\n}\n\n.g-button-violet {\n    background: #A238FF;\n    border: 1px solid #A238FF;\n}\n\n.g-button-violet:hover {\n    background: #AE52FF;\n    border: 1px solid #AE52FF\n}\n";
 styleInject(css_248z);
 
 const TAG = '[仓库助手]';
@@ -1080,6 +1080,8 @@ function registerPlugin() {
     buttons: [{
       index: 2,
       disabled: 'none',
+      color: 'violet',
+      icon: 'icon-upload',
       title: '秒传链接',
       buttonStyle: 'normal',
       pluginId: 'JIXUNSTDCODE',

@@ -20,6 +20,8 @@ export default function registerPlugin() {
     buttons: [{
       index: 2,
       disabled: 'none',
+      color: 'violet',
+      icon: 'icon-upload',
       title: '秒传链接',
       buttonStyle: 'normal',
       pluginId: 'JIXUNSTDCODE',

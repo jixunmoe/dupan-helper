@@ -129,7 +129,10 @@ export default class StandardCodeDialog extends OpDialog {
       counter++;
     }
 
-    refreshFileListView();
+    if (this.getDirectory() === getCurrentDirectory()) {
+      refreshFileListView();
+    }
+
     infoDialog({
       title: `转存完毕 (失败 ${failed} 个, 共 ${totalCount} 个)!`,
       body: `

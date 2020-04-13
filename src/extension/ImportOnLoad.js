@@ -42,7 +42,11 @@ export default class ImportOnLoad {
     });
 
     this.$dialogBody = this.dirSelectDialog.dialog.$dialog.find(getDialog().QUERY.dialogBody);
-    this.checkUsePrevPath = new Checkbox('使用上次储存的位置', 'jx-prev-path');
+    this.checkUsePrevPath = new Checkbox({
+      content: '使用上次储存的位置',
+      className: 'jx-prev-path',
+      checked: true,
+    });
     this.checkUsePrevPath.appendTo(this.$dialogBody);
     this.$prevPath = $('<code>').text(this.prevPath);
     this.checkUsePrevPath.$text.append(this.$prevPath);

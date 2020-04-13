@@ -1,7 +1,13 @@
 import './Checkbox.css';
 
 export default class Checkbox {
-  constructor(content, className) {
+  constructor(options = {}) {
+    const {
+      content = '',
+      className = '',
+      checked = false,
+    } = options;
+
     this.root = $('<label class="jx-label">').addClass(className);
     this.$input = $('<input class="jx-checkbox" type="checkbox" />');
     this.$text = $('<span>');
@@ -12,6 +18,7 @@ export default class Checkbox {
       this.$text.append(content);
     }
 
+    this.$input.prop('checked', checked);
     this.root.append(this.$input).append(this.$text);
   }
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         仓库用度盘投稿助手
 // @namespace    moe.jixun.dupan.galacg
-// @version      1.3.2
+// @version      1.3.3
 // @description  简易功能增强, 方便仓库投稿用
 // @author       Jixun<https://jixun.moe/>
 
@@ -1144,7 +1144,13 @@ var css_248z$3 = ".jx-checkbox {\n    display: none;\n}\n\n.jx-label {\n    curs
 styleInject(css_248z$3);
 
 class Checkbox {
-  constructor(content, className) {
+  constructor(options = {}) {
+    const {
+      content = '',
+      className = '',
+      checked = false,
+    } = options;
+
     this.root = $('<label class="jx-label">').addClass(className);
     this.$input = $('<input class="jx-checkbox" type="checkbox" />');
     this.$text = $('<span>');
@@ -1155,6 +1161,7 @@ class Checkbox {
       this.$text.append(content);
     }
 
+    this.$input.prop('checked', checked);
     this.root.append(this.$input).append(this.$text);
   }
 
@@ -1206,7 +1213,11 @@ class ImportOnLoad {
     });
 
     this.$dialogBody = this.dirSelectDialog.dialog.$dialog.find(getDialog().QUERY.dialogBody);
-    this.checkUsePrevPath = new Checkbox('使用上次储存的位置', 'jx-prev-path');
+    this.checkUsePrevPath = new Checkbox({
+      content: '使用上次储存的位置',
+      className: 'jx-prev-path',
+      checked: true,
+    });
     this.checkUsePrevPath.appendTo(this.$dialogBody);
     this.$prevPath = $('<code>').text(this.prevPath);
     this.checkUsePrevPath.$text.append(this.$prevPath);

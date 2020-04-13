@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         仓库用度盘投稿助手
 // @namespace    moe.jixun.dupan.galacg
-// @version      1.3.3
+// @version      1.3.4
 // @description  简易功能增强, 方便仓库投稿用
 // @author       Jixun<https://jixun.moe/>
 
@@ -890,6 +890,7 @@ class StandardCodeDialog extends OpDialog {
     if (config) {
       this.setText(config.content);
       this.setDirectory(config.directory);
+      this.forceRefresh = config.forceRefresh || false;
     }
   }
 
@@ -997,7 +998,7 @@ class StandardCodeDialog extends OpDialog {
       counter++;
     }
 
-    if (this.getDirectory() === getCurrentDirectory()) {
+    if (this.forceRefresh || this.getDirectory() === getCurrentDirectory()) {
       refreshFileListView();
     }
 
@@ -1042,10 +1043,6 @@ function registerPlugin() {
     entranceFile: 'function-widget:jixun/standard-code.js',
     pluginId: 'JIXUNSTDCODE',
   });
-}
-
-function compose(...fns) {
-  return (...args) => fns.reduce((result, fn) => fn.apply(fn, result), args);
 }
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -1230,7 +1227,7 @@ class ImportOnLoad {
     const { content } = this;
     const directory = this.checkUsePrevPath.checked ? this.prevPath : targetDir;
     this.directoryStore.value = directory;
-    StandardCodeDialog.create({ directory, content });
+    StandardCodeDialog.create({ directory, content, forceRefresh: true });
   }
 }
 
@@ -1241,7 +1238,8 @@ function initialiseQueryLink() {
 }
 
 hook('disk-system:widget/system/uiRender/menu/listMenu.js', injectMenu);
-hook('system-core:pluginHub/register/register.js', compose(registerPlugin, initialiseQueryLink));
+hook('system-core:pluginHub/register/register.js', registerPlugin);
+hook('system-core:system/uiService/list/list.js', initialiseQueryLink);
 
 // ESC 将关闭所有漂浮窗口
 document.addEventListener('keyup', (e) => {

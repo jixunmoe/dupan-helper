@@ -22,6 +22,7 @@ export default class StandardCodeDialog extends OpDialog {
     if (config) {
       this.setText(config.content);
       this.setDirectory(config.directory);
+      this.forceRefresh = config.forceRefresh || false;
     }
   }
 
@@ -129,7 +130,7 @@ export default class StandardCodeDialog extends OpDialog {
       counter++;
     }
 
-    if (this.getDirectory() === getCurrentDirectory()) {
+    if (this.forceRefresh || this.getDirectory() === getCurrentDirectory()) {
       refreshFileListView();
     }
 

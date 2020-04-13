@@ -59,6 +59,6 @@ export default class ImportOnLoad {
     const { content } = this;
     const directory = this.checkUsePrevPath.checked ? this.prevPath : targetDir;
     this.directoryStore.value = directory;
-    StandardCodeDialog.create({ directory, content });
+    StandardCodeDialog.create({ directory, content, forceRefresh: true });
   }
 }

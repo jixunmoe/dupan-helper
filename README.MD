@@ -8,7 +8,7 @@
 [![到 GitHub 安装][btn_gh]][install_gh]
 
 [install_gf]: https://greasyfork.org/scripts/3285
-[install_gh]: https://github.com/JixunMoe/dupan-helper/raw/master/dist/dupan-helper.user.js
+[install_gh]: https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/dist/dupan-helper.user.js
 [install_jd]: https://cdn.jsdelivr.net/gh/JixunMoe/dupan-helper/dist/dupan-helper.user.js
 
 你的浏览器不在上方或者无效果？你可以安装兼容版：<br>
@@ -17,7 +17,7 @@
 [![到 GitHub 安装][btn_gh]][install_ghl]
 
 [install_gfl]: https://greasyfork.org/scripts/400800
-[install_ghl]: https://github.com/JixunMoe/dupan-helper/raw/master/dist/dupan-helper-legacy.user.js
+[install_ghl]: https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/dist/dupan-helper-legacy.user.js
 [install_jdl]: https://cdn.jsdelivr.net/gh/JixunMoe/dupan-helper/dist/dupan-helper-legacy.user.js
 
 ※ 兼容版使用 `babel` 对代码进行降级处理以支援更多的浏览器。

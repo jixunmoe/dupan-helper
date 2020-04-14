@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         仓库用度盘投稿助手
 // @namespace    moe.jixun.dupan.galacg
-// @version      1.3.10
+// @version      1.3.11
 // @description  简易功能增强, 方便仓库投稿用
 // @author       Jixun<https://jixun.moe/>
 
@@ -64,7 +64,12 @@ function fakeRequire(module) {
   const result = oRequire.apply(this, arguments);
   const moduleHook = hooks.get(module);
   if (moduleHook) {
-    moduleHook();
+    try {
+      moduleHook();
+    } catch (e) {
+      console.error('%s: 执行 %s hook 时发生错误: %s', TAG, e.message);
+      console.trace(e);
+    }
     hooks.delete(module);
   }
   return result;
@@ -733,7 +738,14 @@ class SimpleBuffer {
  * @returns {string}
  */
 function decodeBase64(str) {
-  return decodeURIComponent(atob(str).replace(/[^\x00-\x7F]/g, (z) => `%${toStdHex(z.charCodeAt(0))}`));
+  try {
+    str = atob(str);
+  } catch (e) {
+    console.error('%s: base64 decode failed: %s', TAG, str);
+    console.trace(e);
+    return '';
+  }
+  return decodeURIComponent(str.replace(/[^\x00-\x7F]/g, (z) => `%${toStdHex(z.charCodeAt(0))}`));
 }
 
 const trim = (str) => String.prototype.trim.call(str);
@@ -1330,7 +1342,7 @@ function initialiseQueryLink() {
   }
 
   if (query.has(KEY_BDLINK)) {
-    ImportOnLoad.create(decodeBase64(query.get(KEY_BDLINK)));
+    ImportOnLoad.create(decodeBase64(query.get(KEY_BDLINK).replace(/#.{4}$/, '')));
   }
 }
 

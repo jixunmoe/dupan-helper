@@ -9,7 +9,12 @@ function fakeRequire(module) {
   const result = oRequire.apply(this, arguments);
   const moduleHook = hooks.get(module);
   if (moduleHook) {
-    moduleHook();
+    try {
+      moduleHook();
+    } catch (e) {
+      console.error('%s: 执行 %s hook 时发生错误: %s', TAG, e.message);
+      console.trace(e);
+    }
     hooks.delete(module);
   }
   return result;

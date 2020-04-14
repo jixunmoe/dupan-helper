@@ -14,6 +14,6 @@ export default function initialiseQueryLink() {
   }
 
   if (query.has(KEY_BDLINK)) {
-    ImportOnLoad.create(decodeBase64(query.get(KEY_BDLINK)));
+    ImportOnLoad.create(decodeBase64(query.get(KEY_BDLINK).replace(/#.{4}$/, '')));
   }
 }

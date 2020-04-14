@@ -8,7 +8,9 @@ import postcssUrl from 'postcss-url';
 
 const userScript = require('./user-script/rollup-user-script');
 
-function build(suffix, plugins) {
+const SCRIPT_NAME = '仓库用度盘投稿助手';
+
+function build(suffix, name, plugins) {
   return {
     input: 'src/app.js',
     output: {
@@ -29,14 +31,14 @@ function build(suffix, plugins) {
       commonjs(),
       ...plugins,
       resolve(),
-      userScript(),
+      userScript(name),
     ],
   };
 }
 
 export default [
-  build('', []),
-  build('-legacy', [
+  build('', SCRIPT_NAME, []),
+  build('-legacy', `${SCRIPT_NAME} (兼容版)`, [
     babel({
       runtimeHelpers: true,
       exclude: 'node_modules/**',

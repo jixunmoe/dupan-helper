@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         仓库用度盘投稿助手
 // @namespace    moe.jixun.dupan.galacg
-// @version      1.3.11
+// @version      1.3.12
 // @description  简易功能增强, 方便仓库投稿用
 // @author       Jixun<https://jixun.moe/>
 

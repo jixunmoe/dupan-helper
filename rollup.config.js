@@ -1,28 +1,45 @@
-/* eslint-disable global-require */
+import babel from 'rollup-plugin-babel';
+import postcss from 'rollup-plugin-postcss';
+import { string } from 'rollup-plugin-string';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 
-const postcss = require('rollup-plugin-postcss');
-const { string } = require('rollup-plugin-string');
+import postcssUrl from 'postcss-url';
+
 const userScript = require('./user-script/rollup-user-script');
 
-module.exports = {
-  input: 'src/app.js',
-  output: {
-    file: 'dist/dupan-helper.user.js',
-    format: 'cjs',
-  },
-  plugins: [
-    string({
-      include: 'src/**/*.html',
+function build(suffix, plugins) {
+  return {
+    input: 'src/app.js',
+    output: {
+      file: `dist/dupan-helper${suffix}.user.js`,
+      format: 'cjs',
+    },
+    plugins: [
+      string({
+        include: 'src/**/*.html',
+      }),
+      postcss({
+        plugins: [
+          postcssUrl({
+            url: 'inline',
+          }),
+        ],
+      }),
+      commonjs(),
+      ...plugins,
+      resolve(),
+      userScript(),
+    ],
+  };
+}
+
+export default [
+  build('', []),
+  build('-legacy', [
+    babel({
+      runtimeHelpers: true,
+      exclude: 'node_modules/**',
     }),
-    postcss({
-      // extract: 'dist/main.css',
-      plugins: [
-        require('postcss-nested'),
-        require('postcss-url')({
-          url: 'inline',
-        }),
-      ],
-    }),
-    userScript(),
-  ],
-};
+  ]),
+];

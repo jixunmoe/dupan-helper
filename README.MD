@@ -1,34 +1,66 @@
 仓库用度盘投稿助手
 ==================
 
-[![到 GreasyFork 安装](https://i.imgur.com/Kl384i1.png)](https://greasyfork.org/scripts/3285)　[![到 GitHub 安装](https://i.imgur.com/guDdNEc.png)](https://github.com/JixunMoe/dupan-helper/raw/master/dist/dupan-helper.user.js)
+适用于：Google Chrome (80+)、Firefox (74+)。
 
-<del>Chrome 插件版：[仓库用度盘投稿助手](https://chrome.google.com/webstore/detail/iaogjohjloacflojfjajlcmmoajbdpcb)</del> 源码丢了，实现内容和这个脚本（的旧版本）基本没差别。
+[![到 GreasyFork 安装][btn_gf]][install_gf]
+[![到 jsDelivr 安装][btn_jd]][install_jd]
+[![到 GitHub 安装][btn_gh]][install_gh]
+
+[install_gf]: https://greasyfork.org/scripts/3285
+[install_gh]: https://github.com/JixunMoe/dupan-helper/raw/master/dist/dupan-helper.user.js
+[install_jd]: https://cdn.jsdelivr.net/gh/JixunMoe/dupan-helper/dist/dupan-helper.user.js
+
+你的浏览器不在上方或者无效果？你可以安装兼容版：<br>
+[![到 GreasyFork 安装][btn_gf]][install_gfl]
+[![到 jsDelivr 安装][btn_jd]][install_jdl]
+[![到 GitHub 安装][btn_gh]][install_ghl]
+
+[install_gfl]: https://greasyfork.org/scripts/400800
+[install_ghl]: https://github.com/JixunMoe/dupan-helper/raw/master/dist/dupan-helper-legacy.user.js
+[install_jdl]: https://cdn.jsdelivr.net/gh/JixunMoe/dupan-helper/dist/dupan-helper-legacy.user.js
+
+※ 兼容版使用 `babel` 对代码进行降级处理以支援更多的浏览器。
+
+[btn_gh]: https://i.loli.net/2020/04/15/uRf3yFnAUS1ztXC.png
+[btn_gf]: https://i.loli.net/2020/04/15/hXDqr2SPsHWjVKI.png
+[btn_jd]: https://i.loli.net/2020/04/15/PvMEgj7tsiufA83.png
+
+---
+
+<!-- 
+<del>Chrome 插件版：[仓库用度盘投稿助手](https://chrome.google.com/webstore/detail/iaogjohjloacflojfjajlcmmoajbdpcb)</del>
+源码丢了，实现内容和这个脚本（的旧版本）基本没差别。
+-->
 
 ⚠　只需要「秒传」功能的可以参见这个脚本：<br>
-　　　　[秒传链接提取](https://greasyfork.org/scripts/397324)
+　　　[秒传链接提取](https://greasyfork.org/scripts/397324)
 
-👉　源代码托管在 [GitHub](https://github.com/JixunMoe/dupan-helper)
+👉　源代码托管在 [<img src="https://github.githubassets.com/favicons/favicon.png" width=14 /> GitHub](https://github.com/JixunMoe/dupan-helper)
 
-## 功能
+## 脚本功能
 
 * 自定义分享 (自定义提取码，自动生成仓库投稿代码[旧版])　　⚠ 目前严打，有些文件根本分享不出去  
-  ![自定义提取码](https://i.imgur.com/7FFII3m.png)
+  ![自定义提取码][custom_pwd]
 * 批量重命名 (自定义命名规则)  
-  ![批量重命名](https://i.imgur.com/6TQfOP8.png)
-* 标准提取码  
-  ![标准提取码](https://i.imgur.com/VkNMgMO.png)
+  ![批量重命名][batch_rename]
+* 标准提取码 - 再也不怕文件链接坏掉了^<sup>1</sup>  
+  ![标准提取码][std_code]
 
-提取码支持：
+[custom_pwd]: https://i.loli.net/2020/04/15/ocXN1sSOEeAwjZ8.png
+[batch_rename]: https://i.loli.net/2020/04/15/QOL4kcC6IGdR8Ze.png
+[std_code]: https://i.loli.net/2020/04/15/3tZ5Ae6oE2aVRqI.png
+
+^<sup>1</sup>: 取决于百度网盘的服务器是否有这个文件以及是否屏蔽。
+
+## 提取码支持
 
 * 「游侠」的「[肚娘提取码](http://game.ali213.net/thread-5465798-1-1.html)」。  
   游侠格式的提取码一次只能添加一个，不能与其他格式混搭。
 * 梦姬标准提取码
 * PanDownload 的 `bdpan://` 协议链接。
 
-测试于 TamperMonkey 以及理论兼容 GreaseMonkey 2 (未测试)。
-
-## 标准提取码格式
+### 标准提取码格式
 
 一行一个文件数据，格式如下：
 

@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name              仓库用度盘投稿助手
-// @name:en           Baidu WebDisk Helper (dupan-helper)
+// @name:en           Baidu™ WebDisk Helper (dupan-helper)
 // @namespace         moe.jixun.dupan.galacg
-// @version           1.3.13
+// @version           1.3.14
 // @description       简易功能增强, 方便仓库投稿用
+// @description:en    Enhancements for Baidu™ WebDisk.
 // @author            Jixun<https://jixun.moe/>
 
 // @match             https://pan.baidu.com/disk/home*

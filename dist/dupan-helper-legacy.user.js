@@ -2,7 +2,7 @@
 // @name              仓库用度盘投稿助手 (兼容版)
 // @name:en           Baidu™ WebDisk Helper (dupan-helper) (Legacy)
 // @namespace         moe.jixun.dupan.galacg
-// @version           1.3.14
+// @version           1.3.15
 // @description       简易功能增强, 方便仓库投稿用
 // @description:en    Enhancements for Baidu™ WebDisk.
 // @author            Jixun<https://jixun.moe/>
@@ -1509,7 +1509,7 @@ var CustomShareDialog = /*#__PURE__*/function (_OpDialog) {
                 this.$('#jx_shareCode').val(key);
                 this.root.toggleClass('jx_hide');
                 title = fixCode(sharedItems[0].server_filename) + (sharedItems.length === 1 ? '' : ' 等文件');
-                code = "[dlbox title=\"".concat(escapeHtml(title), "\" from=\"\u6D69\u701A\u7684\u5B87\u5B99\" time=\"").concat(makeDate(new Date()), "\" ") + "info=\"\u63D0\u53D6\uFF1A".concat(escapeHtml(key), "\" link1=\"\u5EA6\u5A18|").concat(url, "\"][/dlbox]]");
+                code = "[dlbox title=\"".concat(escapeHtml(title), "\" from=\"\u6D69\u701A\u7684\u5B87\u5B99\" time=\"").concat(makeDate(new Date()), "\" ") + "info=\"\u63D0\u53D6\uFF1A".concat(escapeHtml(key), "\" link1=\"\u5EA6\u5A18|").concat(url, "\"][/dlbox]");
                 this.$('#jx_dlboxCode').val(code);
                 this.show();
 

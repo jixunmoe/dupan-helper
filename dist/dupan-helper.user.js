@@ -2,7 +2,7 @@
 // @name              仓库用度盘投稿助手
 // @name:en           Baidu™ WebDisk Helper (dupan-helper)
 // @namespace         moe.jixun.dupan.galacg
-// @version           1.3.14
+// @version           1.3.15
 // @description       简易功能增强, 方便仓库投稿用
 // @description:en    Enhancements for Baidu™ WebDisk.
 // @author            Jixun<https://jixun.moe/>
@@ -466,7 +466,7 @@ class CustomShareDialog extends OpDialog {
 
     const title = fixCode(sharedItems[0].server_filename) + (sharedItems.length === 1 ? '' : ' 等文件');
     const code = `[dlbox title="${escapeHtml(title)}" from="浩瀚的宇宙" time="${makeDate(new Date())}" `
-      + `info="提取：${escapeHtml(key)}" link1="度娘|${url}"][/dlbox]]`;
+      + `info="提取：${escapeHtml(key)}" link1="度娘|${url}"][/dlbox]`;
 
     this.$('#jx_dlboxCode').val(code);
 

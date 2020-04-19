@@ -6,6 +6,7 @@ import escapeHtml from '../utils/escapeHtml';
 
 import template from './CustomShareDialogTpl.html';
 import OpDialog from './OpDialog';
+import LocalStore from '../utils/LocalStore';
 
 /* 依赖函数表 */
 function isCodeValid(code) {
@@ -67,9 +68,11 @@ export default class CustomShareDialog extends OpDialog {
   }
 
   bootstrap() {
+    this.codeStore = LocalStore.create(this, 'code');
+
     this.$error = this.$('.jx_errmsg');
     this.$footer = this.dialog.find(getDialog().QUERY.dialogFooter);
-    this.$key = this.$('#jx_shareKey').val(genKey());
+    this.$key = this.$('#jx_shareKey').val(this.codeStore.value || genKey());
 
     this.$key.on('input change', this.validateCode);
     this.$key.on('focus', this.hideError);
@@ -83,6 +86,7 @@ export default class CustomShareDialog extends OpDialog {
       key = genKey(4);
       this.$key.val(key);
     }
+    this.codeStore.value = key;
 
     showTip({
       mode: 'loading',

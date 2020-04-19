@@ -2,7 +2,7 @@
 // @name              仓库用度盘投稿助手
 // @name:en           Baidu™ WebDisk Helper (dupan-helper)
 // @namespace         moe.jixun.dupan.galacg
-// @version           1.3.15
+// @version           1.3.16
 // @description       简易功能增强, 方便仓库投稿用
 // @description:en    Enhancements for Baidu™ WebDisk.
 // @author            Jixun<https://jixun.moe/>
@@ -400,9 +400,11 @@ class CustomShareDialog extends OpDialog {
   }
 
   bootstrap() {
+    this.codeStore = LocalStore.create(this, 'code');
+
     this.$error = this.$('.jx_errmsg');
     this.$footer = this.dialog.find(getDialog().QUERY.dialogFooter);
-    this.$key = this.$('#jx_shareKey').val(genKey());
+    this.$key = this.$('#jx_shareKey').val(this.codeStore.value || genKey());
 
     this.$key.on('input change', this.validateCode);
     this.$key.on('focus', this.hideError);
@@ -416,6 +418,7 @@ class CustomShareDialog extends OpDialog {
       key = genKey(4);
       this.$key.val(key);
     }
+    this.codeStore.value = key;
 
     showTip({
       mode: 'loading',

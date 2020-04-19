@@ -2,7 +2,7 @@
 // @name              仓库用度盘投稿助手 (兼容版)
 // @name:en           Baidu™ WebDisk Helper (dupan-helper) (Legacy)
 // @namespace         moe.jixun.dupan.galacg
-// @version           1.3.15
+// @version           1.3.16
 // @description       简易功能增强, 方便仓库投稿用
 // @description:en    Enhancements for Baidu™ WebDisk.
 // @author            Jixun<https://jixun.moe/>
@@ -1437,9 +1437,10 @@ var CustomShareDialog = /*#__PURE__*/function (_OpDialog) {
   }, {
     key: "bootstrap",
     value: function bootstrap() {
+      this.codeStore = LocalStore.create(this, 'code');
       this.$error = this.$('.jx_errmsg');
       this.$footer = this.dialog.find(getDialog().QUERY.dialogFooter);
-      this.$key = this.$('#jx_shareKey').val(genKey());
+      this.$key = this.$('#jx_shareKey').val(this.codeStore.value || genKey());
       this.$key.on('input change', this.validateCode);
       this.$key.on('focus', this.hideError);
     }
@@ -1460,13 +1461,14 @@ var CustomShareDialog = /*#__PURE__*/function (_OpDialog) {
                   this.$key.val(key);
                 }
 
+                this.codeStore.value = key;
                 showTip({
                   mode: 'loading',
                   msg: '正在分享，请稍后 ...',
                   autoClose: false
                 });
                 sharedItems = getCheckedItems();
-                _context.next = 7;
+                _context.next = 8;
                 return ajax({
                   url: '/share/set',
                   type: 'POST',
@@ -1482,12 +1484,12 @@ var CustomShareDialog = /*#__PURE__*/function (_OpDialog) {
                   dataType: 'json'
                 });
 
-              case 7:
+              case 8:
                 resp = _context.sent;
                 hideTip();
 
                 if (!(resp.errno || !resp.shorturl)) {
-                  _context.next = 12;
+                  _context.next = 13;
                   break;
                 }
 
@@ -1497,7 +1499,7 @@ var CustomShareDialog = /*#__PURE__*/function (_OpDialog) {
                 });
                 return _context.abrupt("return");
 
-              case 12:
+              case 13:
                 showTip({
                   mode: 'success',
                   msg: '分享成功!'
@@ -1513,7 +1515,7 @@ var CustomShareDialog = /*#__PURE__*/function (_OpDialog) {
                 this.$('#jx_dlboxCode').val(code);
                 this.show();
 
-              case 23:
+              case 24:
               case "end":
                 return _context.stop();
             }

@@ -27,11 +27,11 @@
 }
 .jx-input {
     margin: 9px 0;
-    padding: 0 0 0 5px;
+    padding: 0.25em;
     width: 200px;
-    height: 24px;
+    line-height: 1;
     vertical-align: middle;
-    border: 1px solid rgba(58,140,255,.3);
+    border: 1px solid #3a8cff4d;
     background: #fff;
     border-radius: 2px;
 }

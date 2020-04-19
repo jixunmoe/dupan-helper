@@ -10,7 +10,9 @@ import LocalStore from '../utils/LocalStore';
 
 /* 依赖函数表 */
 function isCodeValid(code) {
-  return encodeURIComponent(code).replace(/%[A-F\d]{2}/gi, '-').length === 4;
+  // 百度现在改了规则；
+  // 只允许：由数字字母组成的提取码，并且不能全部都是同一个字符。
+  return /^[\da-z]{4}$/i.test(code) && (new Set(code)).size > 1;
 }
 
 function fixCode(code) {
@@ -74,7 +76,7 @@ export default class CustomShareDialog extends OpDialog {
     this.$footer = this.dialog.find(getDialog().QUERY.dialogFooter);
     this.$key = this.$('#jx_shareKey').val(this.codeStore.value || genKey());
 
-    this.$key.on('input change', this.validateCode);
+    this.$key.on('input change blur', this.validateCode);
     this.$key.on('focus', this.hideError);
   }
 
@@ -84,7 +86,7 @@ export default class CustomShareDialog extends OpDialog {
     let key = this.$key.val();
     if (!isCodeValid(key)) {
       key = genKey(4);
-      this.$key.val(key);
+      this.value = key;
     }
     this.codeStore.value = key;
 
@@ -151,8 +153,12 @@ export default class CustomShareDialog extends OpDialog {
     return this.$key.val();
   }
 
+  set value(value) {
+    return this.$key.val(value);
+  }
+
   get isValueValid() {
-    return encodeURIComponent(this.value).replace(/%[A-F\d]{2}/gi, '-').length === 4;
+    return isCodeValid(this.value);
   }
 
   hideError() {

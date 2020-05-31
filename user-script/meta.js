@@ -20,6 +20,7 @@
 // @incompatible      safari
 
 // @license           MIT
+// @homepageURL       https://jixun.moe/post/dupan-helper
 // @supportURL        https://github.com/JixunMoe/dupan-helper/issues
 // @contributionURL   https://jixun.moe/donate
 

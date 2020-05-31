@@ -2,7 +2,7 @@
 // @name              仓库用度盘投稿助手
 // @name:en           Baidu™ WebDisk Helper (dupan-helper)
 // @namespace         moe.jixun.dupan.galacg
-// @version           1.3.17
+// @version           1.3.18
 // @description       简易功能增强, 方便仓库投稿用
 // @description:en    Enhancements for Baidu™ WebDisk.
 // @author            Jixun<https://jixun.moe/>
@@ -20,6 +20,7 @@
 // @incompatible      safari
 
 // @license           MIT
+// @homepageURL       https://jixun.moe/post/dupan-helper
 // @supportURL        https://github.com/JixunMoe/dupan-helper/issues
 // @contributionURL   https://jixun.moe/donate
 

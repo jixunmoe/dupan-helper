@@ -5,11 +5,12 @@
     </label>
   </p>
 
-  <section class="jx-form-options">
+  <!-- 选择覆盖的時候好像并不会生效? -->
+  <section class="jx-form-options jx_hide">
     文件重复时：
     <!-- <label><input name="ondup" type="radio" value="" /> 忽略</label> -->
     <label><input name="ondup" type="radio" value="newcopy" checked /> 建立副本</label>
-    <label><input name="ondup" type="radio" value="overwrite" /> 覆盖</label>
+    <label><input name="ondup" type="radio" value="overwrite" disabled /> 覆盖</label>
   </section>
 
   <!--

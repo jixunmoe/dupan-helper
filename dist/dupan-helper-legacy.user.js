@@ -2,7 +2,7 @@
 // @name              仓库用度盘投稿助手 (兼容版)
 // @name:en           Baidu™ WebDisk Helper (dupan-helper) (Legacy)
 // @namespace         moe.jixun.dupan.galacg
-// @version           1.3.18
+// @version           1.3.19
 // @description       简易功能增强, 方便仓库投稿用
 // @description:en    Enhancements for Baidu™ WebDisk.
 // @author            Jixun<https://jixun.moe/>
@@ -116,9 +116,27 @@ if (window.require) {
   });
 } // window.__debug_G = _G;
 
-function getFileList() {
-  return load('disk-system:widget/pageModule/list/listInit.js');
+var cache = function cache(value) {
+  return function () {
+    return value;
+  };
+};
+
+function lazyCache(fn) {
+  var _cacheWrapper = function cacheWrapper() {
+    var result = fn.apply(this, arguments);
+    _cacheWrapper = cache(result);
+    return result;
+  };
+
+  return function () {
+    return _cacheWrapper.apply(this, arguments);
+  };
 }
+
+var getFileList = lazyCache(function getFileList() {
+  return load('disk-system:widget/pageModule/list/listInit.js');
+});
 function getCheckedItems() {
   return getFileList().getCheckedItems();
 }
@@ -1082,12 +1100,31 @@ function firstFunction() {
   });
 }
 
+var getJQuery = lazyCache(function getJQuery() {
+  return load('base:widget/libs/jquerypacket.js');
+});
+function $$1() {
+  return getJQuery().apply(window, arguments);
+}
+
+function proxyJQuery(key) {
+  Object.defineProperty($$1, key, {
+    get: function get() {
+      return getJQuery()[key];
+    }
+  });
+}
+
+proxyJQuery('fn');
+proxyJQuery('ajax');
+proxyJQuery('isPlainObject');
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-function getDialog() {
+var getDialog = lazyCache(function getDialog() {
   return load('system-core:system/uiService/dialog/dialog.js');
-}
+});
 var bigButton = {
   type: 'big',
   padding: ['50px', '50px']
@@ -1103,7 +1140,7 @@ function confirmDialog(data) {
     id: "confirm-".concat(nextId()),
     show: true,
     title: data.title,
-    body: $('<div class="jx-dialog-body">').append(data.body),
+    body: $$1('<div class="jx-dialog-body">').append(data.body),
     buttons: [_objectSpread({}, bigButton, {
       name: 'confirm',
       title: data.sureText || '确定',
@@ -1130,9 +1167,9 @@ function infoDialog(data) {
   }));
 }
 
-function getTip() {
+var getTip = lazyCache(function getTip() {
   return load('system-core:system/uiService/tip/tip.js');
-}
+});
 function showTip() {
   return getTip().show.apply(this, arguments);
 }
@@ -1140,16 +1177,16 @@ function hideTip() {
   return getTip().hide.apply(this, arguments);
 }
 
-function getContext() {
+var getContext = lazyCache(function getContext() {
   return load('system-core:context/context.js').instanceForSystem;
-}
+});
 
 function getErrorMessage(code) {
   var msg = String(getContext().errorMsg(code));
   return msg.replace(/\s+rapidupload 错误码$/, '');
 }
 function injectErrorMessage(obj) {
-  if ($.isPlainObject(obj)) {
+  if ($$1.isPlainObject(obj)) {
     obj.error = obj.show_msg || getErrorMessage(obj.errno || 0);
   }
 
@@ -1167,7 +1204,7 @@ function _ajax() {
         switch (_context.prev = _context.next) {
           case 0:
             return _context.abrupt("return", new Promise(function (resolve) {
-              $.ajax(data).fail(function (err) {
+              $$1.ajax(data).fail(function (err) {
                 resolve({
                   errno: -1,
                   error: '网络错误。'
@@ -1247,7 +1284,7 @@ var OpDialog = /*#__PURE__*/function () {
 
     defineProperty(this, "confirmText", '确定');
 
-    this.root = $(template);
+    this.root = $$1(template);
     this.title = options.title || '';
 
     if (options.confirmText) {
@@ -1286,19 +1323,9 @@ var OpDialog = /*#__PURE__*/function () {
 
   }, {
     key: "$",
-    value: function (_$) {
-      function $(_x) {
-        return _$.apply(this, arguments);
-      }
-
-      $.toString = function () {
-        return _$.toString();
-      };
-
-      return $;
-    }(function (selector) {
-      return $(selector, this.root);
-    })
+    value: function $(selector) {
+      return $$1(selector, this.root);
+    }
     /**
      * Bind events.
      */
@@ -1566,9 +1593,9 @@ var CustomShareDialog = /*#__PURE__*/function (_OpDialog) {
 
 var template$1 = "<p>\n  <label for=\"jx_nameRule\">请输入新的命名规则 (自动储存)</label>:\n  <input id=\"jx_nameRule\" class=\"jx-input\" style=\"width:20em\" />\n</p>\n\n<p style=\"line-height: 1; padding-top: 1em;\">\n  <code>:n</code> 表示不带扩展名的文件名; <code>:e</code> 表示扩展名; <code>:E</code> 表示 .扩展名;\n  <br><code>:d</code> 表示一位随机数字; <code>:c</code> 表示一位随机字符; <code>:t</code> 表示当前时间戳\n</p>\n";
 
-function getMessage() {
+var getMessage = lazyCache(function getMessage() {
   return load('system-core:system/baseService/message/message.js');
-}
+});
 function trigger(event) {
   getMessage().trigger(event);
 }
@@ -1779,7 +1806,7 @@ function injectMenu() {
   });
 }
 
-var template$2 = "<form>\n  <p>\n    <label>\n      <textarea class=\"jx jx_code jx-input\" rows=\"7\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\"></textarea>\n    </label>\n  </p>\n\n  <section class=\"jx-form-options\">\n    文件重复时：\n    <!-- <label><input name=\"ondup\" type=\"radio\" value=\"\" /> 忽略</label> -->\n    <label><input name=\"ondup\" type=\"radio\" value=\"newcopy\" checked /> 建立副本</label>\n    <label><input name=\"ondup\" type=\"radio\" value=\"overwrite\" /> 覆盖</label>\n  </section>\n\n  <!--\n  <p style=\"line-height: 1; padding: .5em 0;\">\n    扩展阅读:\n    <a href=\"http://game.ali213.net/thread-5465798-1-1.html\" target=\"_blank\">肚娘代码说明 [游侠]</a>\n    | <a href=\"https://jixun.moe/2017/06/13/du-code-gen/\" target=\"_blank\">标准度娘提取码 [梦姬]</a>\n  </p>\n  -->\n\n  <p style=\"text-align:left\">\n    <b>文件列表</b> (版本: <span class=\"jx_version\" style=\"color:black\">--</span>):\n  </p>\n  <ul class=\"jx_list\"></ul>\n  <p class=\"jx_c_warn jx_hide jx_errmsg\">识别不出任何有效的秒传链接。</p>\n</form>\n";
+var template$2 = "<form>\n  <p>\n    <label>\n      <textarea class=\"jx jx_code jx-input\" rows=\"7\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\"></textarea>\n    </label>\n  </p>\n\n  <!-- 选择覆盖的時候好像并不会生效? -->\n  <section class=\"jx-form-options jx_hide\">\n    文件重复时：\n    <!-- <label><input name=\"ondup\" type=\"radio\" value=\"\" /> 忽略</label> -->\n    <label><input name=\"ondup\" type=\"radio\" value=\"newcopy\" checked /> 建立副本</label>\n    <label><input name=\"ondup\" type=\"radio\" value=\"overwrite\" disabled /> 覆盖</label>\n  </section>\n\n  <!--\n  <p style=\"line-height: 1; padding: .5em 0;\">\n    扩展阅读:\n    <a href=\"http://game.ali213.net/thread-5465798-1-1.html\" target=\"_blank\">肚娘代码说明 [游侠]</a>\n    | <a href=\"https://jixun.moe/2017/06/13/du-code-gen/\" target=\"_blank\">标准度娘提取码 [梦姬]</a>\n  </p>\n  -->\n\n  <p style=\"text-align:left\">\n    <b>文件列表</b> (版本: <span class=\"jx_version\" style=\"color:black\">--</span>):\n  </p>\n  <ul class=\"jx_list\"></ul>\n  <p class=\"jx_c_warn jx_hide jx_errmsg\">识别不出任何有效的秒传链接。</p>\n</form>\n";
 
 function debounce(fn) {
   var timer;
@@ -2666,9 +2693,9 @@ var Checkbox = /*#__PURE__*/function () {
         className = _options$className === void 0 ? '' : _options$className,
         _options$checked = options.checked,
         checked = _options$checked === void 0 ? false : _options$checked;
-    this.root = $('<label class="jx-label">').addClass(className);
-    this.$input = $('<input class="jx-checkbox" type="checkbox" />');
-    this.$text = $('<span>');
+    this.root = $$1('<label class="jx-label">').addClass(className);
+    this.$input = $$1('<input class="jx-checkbox" type="checkbox" />');
+    this.$text = $$1('<span>');
 
     if (typeof content === 'string') {
       this.$text.text(content);
@@ -2827,7 +2854,7 @@ hook('system-core:system/uiService/list/list.js', initialiseQueryLink); // ESC �
 
 document.addEventListener('keyup', function (e) {
   if (e.keyCode === 0x1b) {
-    $('.dialog-close').click();
+    $$1('.dialog-close').click();
   }
 }, false);
 

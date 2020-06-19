@@ -4,6 +4,7 @@ import { hook } from './my-loader';
 import injectMenu from './utils/injectMenu';
 import registerPlugin from './registerPlugin';
 import initialiseQueryLink from './extension/initialiseQueryLink';
+import { $ } from './baidu/getJQuery';
 
 hook('disk-system:widget/system/uiRender/menu/listMenu.js', injectMenu);
 hook('system-core:pluginHub/register/register.js', registerPlugin);

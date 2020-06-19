@@ -1,4 +1,5 @@
 import './Checkbox.css';
+import { $ } from '../baidu/getJQuery';
 
 export default class Checkbox {
   constructor(options = {}) {

@@ -1,5 +1,6 @@
 import { injectErrorMessage } from '../baidu/getErrorMessage';
 import { TAG } from '../constants';
+import { $ } from '../baidu/getJQuery';
 
 export default async function ajax(data) {
   return new Promise((resolve) => {

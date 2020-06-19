@@ -1,8 +1,11 @@
 import { load } from '../my-loader';
+import lazyCache from '../utils/lazyCache';
 
-export default function getTip() {
+const getTip = lazyCache(function getTip() {
   return load('system-core:system/uiService/tip/tip.js');
-}
+});
+
+export default getTip;
 
 export function showTip() {
   return getTip().show.apply(this, arguments);

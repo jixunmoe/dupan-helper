@@ -1,5 +1,6 @@
 import { confirmDialog } from '../baidu/getDialog';
 import LocalStore from '../utils/LocalStore';
+import { $ } from '../baidu/getJQuery';
 
 export default class OpDialog {
   confirmText = '确定';

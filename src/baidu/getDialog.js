@@ -3,10 +3,14 @@ import './Dialog.css';
 import { load } from '../my-loader';
 import nextId from '../utils/nextId';
 import firstFunction from '../utils/firstFunction';
+import { $ } from './getJQuery';
+import lazyCache from '../utils/lazyCache';
 
-export default function getDialog() {
+const getDialog = lazyCache(function getDialog() {
   return load('system-core:system/uiService/dialog/dialog.js');
-}
+});
+
+export default getDialog;
 
 export const bigButton = {
   type: 'big',

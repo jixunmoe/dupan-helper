@@ -1,4 +1,5 @@
 import getContext from './getContext';
+import { $ } from './getJQuery';
 
 export default function getErrorMessage(code) {
   const msg = String(getContext().errorMsg(code));

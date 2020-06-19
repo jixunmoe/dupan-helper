@@ -1,8 +1,11 @@
 import { load } from '../my-loader';
+import lazyCache from '../utils/lazyCache';
 
-export default function getMessage() {
+const getMessage = lazyCache(function getMessage() {
   return load('system-core:system/baseService/message/message.js');
-}
+});
+
+export default getMessage;
 
 export function trigger(event) {
   getMessage().trigger(event);

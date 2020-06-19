@@ -1,5 +1,8 @@
 import { load } from '../my-loader';
+import lazyCache from '../utils/lazyCache';
 
-export default function getContext() {
+const getContext = lazyCache(function getContext() {
   return load('system-core:context/context.js').instanceForSystem;
-}
+});
+
+export default getContext;

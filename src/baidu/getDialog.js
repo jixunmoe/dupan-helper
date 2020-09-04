@@ -6,9 +6,7 @@ import firstFunction from '../utils/firstFunction';
 import { $ } from './getJQuery';
 import lazyCache from '../utils/lazyCache';
 
-const getDialog = lazyCache(function getDialog() {
-  return load('system-core:system/uiService/dialog/dialog.js');
-});
+const getDialog = lazyCache(() => load('system-core:system/uiService/dialog/dialog.js'));
 
 export default getDialog;
 

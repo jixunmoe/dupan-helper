@@ -1,9 +1,7 @@
 import { load } from '../my-loader';
 import lazyCache from '../utils/lazyCache';
 
-const getJQuery = lazyCache(function getJQuery() {
-  return load('base:widget/libs/jquerypacket.js');
-});
+const getJQuery = lazyCache(() => load('base:widget/libs/jquerypacket.js'));
 
 export default getJQuery;
 

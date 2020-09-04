@@ -1,9 +1,7 @@
 import { load } from '../my-loader';
 import lazyCache from '../utils/lazyCache';
 
-const getFileList = lazyCache(function getFileList() {
-  return load('disk-system:widget/pageModule/list/listInit.js');
-});
+const getFileList = lazyCache(() => load('disk-system:widget/pageModule/list/listInit.js'));
 
 export default getFileList;
 

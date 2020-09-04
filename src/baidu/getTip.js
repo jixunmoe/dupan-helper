@@ -1,9 +1,7 @@
 import { load } from '../my-loader';
 import lazyCache from '../utils/lazyCache';
 
-const getTip = lazyCache(function getTip() {
-  return load('system-core:system/uiService/tip/tip.js');
-});
+const getTip = lazyCache(() => load('system-core:system/uiService/tip/tip.js'));
 
 export default getTip;
 

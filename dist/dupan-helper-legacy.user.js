@@ -2,7 +2,7 @@
 // @name              仓库用度盘投稿助手 (兼容版)
 // @name:en           Baidu™ WebDisk Helper (dupan-helper) (Legacy)
 // @namespace         moe.jixun.dupan.galacg
-// @version           1.3.19
+// @version           1.3.20
 // @description       简易功能增强, 方便仓库投稿用
 // @description:en    Enhancements for Baidu™ WebDisk.
 // @author            Jixun<https://jixun.moe/>
@@ -134,7 +134,7 @@ function lazyCache(fn) {
   };
 }
 
-var getFileList = lazyCache(function getFileList() {
+var getFileList = lazyCache(function () {
   return load('disk-system:widget/pageModule/list/listInit.js');
 });
 function getCheckedItems() {
@@ -1100,7 +1100,7 @@ function firstFunction() {
   });
 }
 
-var getJQuery = lazyCache(function getJQuery() {
+var getJQuery = lazyCache(function () {
   return load('base:widget/libs/jquerypacket.js');
 });
 function $$1() {
@@ -1122,7 +1122,7 @@ proxyJQuery('isPlainObject');
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-var getDialog = lazyCache(function getDialog() {
+var getDialog = lazyCache(function () {
   return load('system-core:system/uiService/dialog/dialog.js');
 });
 var bigButton = {
@@ -1167,7 +1167,7 @@ function infoDialog(data) {
   }));
 }
 
-var getTip = lazyCache(function getTip() {
+var getTip = lazyCache(function () {
   return load('system-core:system/uiService/tip/tip.js');
 });
 function showTip() {
@@ -1177,7 +1177,7 @@ function hideTip() {
   return getTip().hide.apply(this, arguments);
 }
 
-var getContext = lazyCache(function getContext() {
+var getContext = lazyCache(function () {
   return load('system-core:context/context.js').instanceForSystem;
 });
 
@@ -1593,7 +1593,7 @@ var CustomShareDialog = /*#__PURE__*/function (_OpDialog) {
 
 var template$1 = "<p>\n  <label for=\"jx_nameRule\">请输入新的命名规则 (自动储存)</label>:\n  <input id=\"jx_nameRule\" class=\"jx-input\" style=\"width:20em\" />\n</p>\n\n<p style=\"line-height: 1; padding-top: 1em;\">\n  <code>:n</code> 表示不带扩展名的文件名; <code>:e</code> 表示扩展名; <code>:E</code> 表示 .扩展名;\n  <br><code>:d</code> 表示一位随机数字; <code>:c</code> 表示一位随机字符; <code>:t</code> 表示当前时间戳\n</p>\n";
 
-var getMessage = lazyCache(function getMessage() {
+var getMessage = lazyCache(function () {
   return load('system-core:system/baseService/message/message.js');
 });
 function trigger(event) {
@@ -2741,26 +2741,83 @@ var ImportOnLoad = /*#__PURE__*/function () {
     this.content = content;
     this.onConfirm = this.onConfirm.bind(this);
     this.selectDirectory = this.selectDirectory.bind(this);
-    this.initTreeSelector()["catch"](console.error);
+    this.tryAndInitTreeSelector()["catch"](console.error);
   }
 
   createClass(ImportOnLoad, [{
-    key: "initTreeSelector",
+    key: "tryAndInitTreeSelector",
     value: function () {
-      var _initTreeSelector = asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+      var _tryAndInitTreeSelector = asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+        var i;
         return regenerator.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return loadAsync('disk-system:widget/system/baseService/shareDir/shareDirManager.js');
+                i = 5;
+
+              case 1:
+                if (!(i >= 0)) {
+                  _context.next = 16;
+                  break;
+                }
+
+                _context.prev = 2;
+                _context.next = 5;
+                return this.initTreeSelector();
+
+              case 5:
+                return _context.abrupt("return");
+
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](2);
+                console.error(_context.t0);
+
+              case 11:
+                _context.next = 13;
+                return new Promise(function (resolve) {
+                  return setTimeout(resolve, 5000);
+                });
+
+              case 13:
+                i--;
+                _context.next = 1;
+                break;
+
+              case 16:
+                throw new Error('Could not init tree selector.');
+
+              case 17:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[2, 8]]);
+      }));
+
+      function tryAndInitTreeSelector() {
+        return _tryAndInitTreeSelector.apply(this, arguments);
+      }
+
+      return tryAndInitTreeSelector;
+    }()
+  }, {
+    key: "initTreeSelector",
+    value: function () {
+      var _initTreeSelector = asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
+        return regenerator.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return loadAsync('disk-system:widget/plugin/moveCopy/start.js');
 
               case 2:
-                _context.next = 4;
+                _context2.next = 4;
                 return loadAsync('disk-system:widget/system/uiService/fileTreeDialog/fileTreeDialog.js');
 
               case 4:
-                this.fileTreeDialog = _context.sent;
+                this.fileTreeDialog = _context2.sent;
                 this.ui = getContext().ui;
                 this.directoryStore = LocalStore.create(this, 'import_dir');
                 this.prevPath = this.directoryStore.value || '/';
@@ -2768,10 +2825,10 @@ var ImportOnLoad = /*#__PURE__*/function () {
 
               case 9:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
       function initTreeSelector() {

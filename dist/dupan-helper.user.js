@@ -2,7 +2,7 @@
 // @name              仓库用度盘投稿助手
 // @name:en           Baidu™ WebDisk Helper (dupan-helper)
 // @namespace         moe.jixun.dupan.galacg
-// @version           1.3.19
+// @version           1.3.20
 // @description       简易功能增强, 方便仓库投稿用
 // @description:en    Enhancements for Baidu™ WebDisk.
 // @author            Jixun<https://jixun.moe/>
@@ -116,23 +116,21 @@ if (window.require) {
   });
 }
 
-const cache = value => () => value;
+const cache = (value) => () => value;
 
 function lazyCache(fn) {
-    let cacheWrapper = function () {
-        const result = fn.apply(this, arguments);
-        cacheWrapper = cache(result);
-        return result;
-    };
+  let cacheWrapper = function () {
+    const result = fn.apply(this, arguments);
+    cacheWrapper = cache(result);
+    return result;
+  };
 
-    return function () {
-        return cacheWrapper.apply(this, arguments);
-    };
+  return function () {
+    return cacheWrapper.apply(this, arguments);
+  };
 }
 
-const getFileList = lazyCache(function getFileList() {
-  return load('disk-system:widget/pageModule/list/listInit.js');
-});
+const getFileList = lazyCache(() => load('disk-system:widget/pageModule/list/listInit.js'));
 
 function getCheckedItems() {
   return getFileList().getCheckedItems();
@@ -160,9 +158,7 @@ function firstFunction(...fns) {
   return fns.find((fn) => typeof fn === 'function');
 }
 
-const getJQuery = lazyCache(function getJQuery() {
-  return load('base:widget/libs/jquerypacket.js');
-});
+const getJQuery = lazyCache(() => load('base:widget/libs/jquerypacket.js'));
 
 function $$1() {
   return getJQuery().apply(window, arguments);
@@ -178,9 +174,7 @@ proxyJQuery('fn');
 proxyJQuery('ajax');
 proxyJQuery('isPlainObject');
 
-const getDialog = lazyCache(function getDialog() {
-  return load('system-core:system/uiService/dialog/dialog.js');
-});
+const getDialog = lazyCache(() => load('system-core:system/uiService/dialog/dialog.js'));
 
 const bigButton = {
   type: 'big',
@@ -226,9 +220,7 @@ function infoDialog(data) {
   });
 }
 
-const getTip = lazyCache(function getTip() {
-  return load('system-core:system/uiService/tip/tip.js');
-});
+const getTip = lazyCache(() => load('system-core:system/uiService/tip/tip.js'));
 
 function showTip() {
   return getTip().show.apply(this, arguments);
@@ -238,9 +230,7 @@ function hideTip() {
   return getTip().hide.apply(this, arguments);
 }
 
-const getContext = lazyCache(function getContext() {
-  return load('system-core:context/context.js').instanceForSystem;
-});
+const getContext = lazyCache(() => load('system-core:context/context.js').instanceForSystem);
 
 function getErrorMessage(code) {
   const msg = String(getContext().errorMsg(code));
@@ -537,9 +527,7 @@ class CustomShareDialog extends OpDialog {
 
 var template$1 = "<p>\n  <label for=\"jx_nameRule\">请输入新的命名规则 (自动储存)</label>:\n  <input id=\"jx_nameRule\" class=\"jx-input\" style=\"width:20em\" />\n</p>\n\n<p style=\"line-height: 1; padding-top: 1em;\">\n  <code>:n</code> 表示不带扩展名的文件名; <code>:e</code> 表示扩展名; <code>:E</code> 表示 .扩展名;\n  <br><code>:d</code> 表示一位随机数字; <code>:c</code> 表示一位随机字符; <code>:t</code> 表示当前时间戳\n</p>\n";
 
-const getMessage = lazyCache(function getMessage() {
-  return load('system-core:system/baseService/message/message.js');
-});
+const getMessage = lazyCache(() => load('system-core:system/baseService/message/message.js'));
 
 function trigger(event) {
   getMessage().trigger(event);
@@ -1320,12 +1308,27 @@ class ImportOnLoad {
     this.onConfirm = this.onConfirm.bind(this);
     this.selectDirectory = this.selectDirectory.bind(this);
 
-    this.initTreeSelector().catch(console.error);
+    this.tryAndInitTreeSelector().catch(console.error);
+  }
+
+  async tryAndInitTreeSelector() {
+    for (let i = 5; i >= 0; i--) {
+      try {
+        await this.initTreeSelector();
+        // init success
+        return;
+      } catch (error) {
+        console.error(error);
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+    }
+    throw new Error('Could not init tree selector.');
   }
 
   async initTreeSelector() {
     // 百度的这个依赖没处理好啊，还得我手动照着顺序来加载
-    await loadAsync('disk-system:widget/system/baseService/shareDir/shareDirManager.js');
+    await loadAsync('disk-system:widget/plugin/moveCopy/start.js');
     this.fileTreeDialog = await loadAsync('disk-system:widget/system/uiService/fileTreeDialog/fileTreeDialog.js');
 
     this.ui = getContext().ui;

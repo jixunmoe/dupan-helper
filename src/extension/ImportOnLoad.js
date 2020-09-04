@@ -18,12 +18,27 @@ export default class ImportOnLoad {
     this.onConfirm = this.onConfirm.bind(this);
     this.selectDirectory = this.selectDirectory.bind(this);
 
-    this.initTreeSelector().catch(console.error);
+    this.tryAndInitTreeSelector().catch(console.error);
+  }
+
+  async tryAndInitTreeSelector() {
+    for (let i = 5; i >= 0; i--) {
+      try {
+        await this.initTreeSelector();
+        // init success
+        return;
+      } catch (error) {
+        console.error(error);
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+    }
+    throw new Error('Could not init tree selector.');
   }
 
   async initTreeSelector() {
     // 百度的这个依赖没处理好啊，还得我手动照着顺序来加载
-    await loadAsync('disk-system:widget/system/baseService/shareDir/shareDirManager.js');
+    await loadAsync('disk-system:widget/plugin/moveCopy/start.js');
     this.fileTreeDialog = await loadAsync('disk-system:widget/system/uiService/fileTreeDialog/fileTreeDialog.js');
 
     this.ui = getContext().ui;

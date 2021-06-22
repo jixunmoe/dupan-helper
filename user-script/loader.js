@@ -1,3 +1,31 @@
+const styleInject = (function styleLoaderFactory() {
+  let pending = [];
+
+  function addStyle(css) {
+    const style = document.createElement('style');
+    style.textContent = css;
+    document.head.appendChild(style);
+  }
+
+  function injectPendingCSS() {
+    styleInject.pending.forEach(addStyle);
+    pending = undefined;
+    window.removeEventListener('DOMContentLoaded', injectPendingCSS);
+  }
+
+  window.addEventListener('DOMContentLoaded', injectPendingCSS);
+
+  function styleLoader(css) {
+    if (document.head) {
+      addStyle(css);
+    } else {
+      pending.push(css);
+    }
+  }
+
+  return styleLoader;
+}());
+
 const isGm = (typeof unsafeWindow !== 'undefined') && (unsafeWindow !== window);
 if (isGm) {
   const INFO = '[仓库助手]';

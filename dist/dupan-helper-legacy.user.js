@@ -2,7 +2,7 @@
 // @name              仓库用度盘投稿助手 (兼容版)
 // @name:en           Baidu™ WebDisk Helper (dupan-helper) (Legacy)
 // @namespace         moe.jixun.dupan.galacg
-// @version           1.3.20
+// @version           1.3.21
 // @description       简易功能增强, 方便仓库投稿用
 // @description:en    Enhancements for Baidu™ WebDisk.
 // @author            Jixun<https://jixun.moe/>
@@ -31,33 +31,6 @@
 
 function entryPoint () {
 'use strict';
-
-function styleInject(css, ref) {
-  if ( ref === void 0 ) ref = {};
-  var insertAt = ref.insertAt;
-
-  if (!css || typeof document === 'undefined') { return; }
-
-  var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
-  style.type = 'text/css';
-
-  if (insertAt === 'top') {
-    if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
-    } else {
-      head.appendChild(style);
-    }
-  } else {
-    head.appendChild(style);
-  }
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    style.appendChild(document.createTextNode(css));
-  }
-}
 
 var css_248z = ".jx_btn {\n    background: #fefefe;\n    background: linear-gradient(to bottom,  #fefefe 0%,#f2f2f2 88%);\n\n    display: inline-block;\n    line-height: 25px;\n    vertical-align: middle;\n    margin: 0 0 0 10px;\n    text-decoration: none;\n    border: 1px solid #AAA;\n    padding: 0 20px;\n    height: 26px;\n    border-radius: 2px;\n\n    min-width: 3em;\n    text-align: center;\n}\n.jx_btn, .jx_btn:hover, .jx_btn:focus {\n    color: #666;\n}\n.jx_btn:active {\n    color: #06C;\n    background: #e3e3e3;\n    background: -moz-linear-gradient(top,  #e3e3e3 0%, #f7f7f7 12%);\n    background: -webkit-linear-gradient(top,  #e3e3e3 0%,#f7f7f7 12%);\n    background: linear-gradient(to bottom,  #e3e3e3 0%,#f7f7f7 12%);\n}\n.jx-input {\n    margin: 9px 0;\n    padding: 0.25em;\n    width: 200px;\n    line-height: 1;\n    vertical-align: middle;\n    border: 1px solid #3a8cff4d;\n    background: #fff;\n    border-radius: 2px;\n}\n\n.jx_hide   { display: none }\n.jx_c_warn { color: red }\n\n.jx_list {\n    text-align: left;\n    max-height: 5.5em;\n    overflow-y: scroll;\n    overflow-x: hidden;\n    line-height: 1;\n    padding: .2em;\n    margin-bottom: .5em;\n}\n\n/*\n.jx_list:not(:empty) {\n  border: 1px solid #ddd;\n}\n*/\n\n.jx_list > li {\n    display: flex;\n    white-space: nowrap;\n    line-height: 1.3;\n}\n\n.jx_list .name {\n    color: black;\n\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n\n.jx_list .size {\n    color: #777;\n\n    flex-grow: 1;\n}\n\n.save-complete-details {\n    max-height: 30em;\n}\n\n.jx-status {\n    padding-left: 0.25em;\n}\n\n.jx-status-success {\n    color: green;\n}\n\n.jx-status-skip {\n    color: gray;\n}\n\n.jx-status-fail {\n    color: red;\n}\n\ntextarea.jx{\n    width: 100%;\n    min-height: 5em;\n    line-height: 1;\n}\n\n.jx-form-options {\n    display: flex;\n    justify-content: left;\n}\n\n.jx-form-options > label {\n    display: inline-flex;\n    align-items: center;\n}\n\n.jx-form-options > label + label {\n    margin-left: 0.5em;\n}\n\n.jx-form-options > label > input {\n    margin-right: 0.25em;\n}\n\n.dialog-header-title > .select-text {\n    pointer-events: none;\n}\n\n.g-button-violet .text,\n.g-button-violet .icon,\n.g-button.g-button-violet:hover .icon {\n    color: #fff;\n}\n\n.g-button.g-button-violet:hover .icon {\n    opacity: 0.9;\n}\n\n.g-button-violet {\n    background: #A238FF;\n    border: 1px solid #A238FF;\n}\n\n.g-button-violet:hover {\n    background: #AE52FF;\n    border: 1px solid #AE52FF\n}\n";
 styleInject(css_248z);
@@ -123,14 +96,14 @@ var cache = function cache(value) {
 };
 
 function lazyCache(fn) {
-  var _cacheWrapper = function cacheWrapper() {
+  var cacheWrapper = function uncached() {
     var result = fn.apply(this, arguments);
-    _cacheWrapper = cache(result);
+    cacheWrapper = cache(result);
     return result;
   };
 
-  return function () {
-    return _cacheWrapper.apply(this, arguments);
+  return function cacheProxy() {
+    return cacheWrapper.apply(this, arguments);
   };
 }
 
@@ -1806,7 +1779,7 @@ function injectMenu() {
   });
 }
 
-var template$2 = "<form>\n  <p>\n    <label>\n      <textarea class=\"jx jx_code jx-input\" rows=\"7\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\"></textarea>\n    </label>\n  </p>\n\n  <!-- 选择覆盖的時候好像并不会生效? -->\n  <section class=\"jx-form-options jx_hide\">\n    文件重复时：\n    <!-- <label><input name=\"ondup\" type=\"radio\" value=\"\" /> 忽略</label> -->\n    <label><input name=\"ondup\" type=\"radio\" value=\"newcopy\" checked /> 建立副本</label>\n    <label><input name=\"ondup\" type=\"radio\" value=\"overwrite\" disabled /> 覆盖</label>\n  </section>\n\n  <!--\n  <p style=\"line-height: 1; padding: .5em 0;\">\n    扩展阅读:\n    <a href=\"http://game.ali213.net/thread-5465798-1-1.html\" target=\"_blank\">肚娘代码说明 [游侠]</a>\n    | <a href=\"https://jixun.moe/2017/06/13/du-code-gen/\" target=\"_blank\">标准度娘提取码 [梦姬]</a>\n  </p>\n  -->\n\n  <p style=\"text-align:left\">\n    <b>文件列表</b> (版本: <span class=\"jx_version\" style=\"color:black\">--</span>):\n  </p>\n  <ul class=\"jx_list\"></ul>\n  <p class=\"jx_c_warn jx_hide jx_errmsg\">识别不出任何有效的秒传链接。</p>\n</form>\n";
+var template$2 = "<form>\n  <p>\n    <label>\n      <textarea class=\"jx jx_code jx-input\" rows=\"7\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\"></textarea>\n    </label>\n  </p>\n\n  <!-- 选择覆盖的時候好像并不会生效? -->\n  <section class=\"jx-form-options jx_hide\">\n    文件重复时：\n    <label><input name=\"ondup\" type=\"radio\" value=\"newcopy\" checked /> 建立副本</label>\n    <label><input name=\"ondup\" type=\"radio\" value=\"overwrite\" disabled /> 覆盖</label>\n  </section>\n\n  <p style=\"text-align:left\">\n    <em>文件列表</em> (版本: <span class=\"jx_version\" style=\"color:black\">--</span>):\n  </p>\n  <ul class=\"jx_list\"></ul>\n  <p class=\"jx_c_warn jx_hide jx_errmsg\">识别不出任何有效的秒传链接。</p>\n</form>\n";
 
 function debounce(fn) {
   var timer;
@@ -2916,6 +2889,34 @@ document.addEventListener('keyup', function (e) {
 }, false);
 
 }
+
+const styleInject = (function styleLoaderFactory() {
+  let pending = [];
+
+  function addStyle(css) {
+    const style = document.createElement('style');
+    style.textContent = css;
+    document.head.appendChild(style);
+  }
+
+  function injectPendingCSS() {
+    styleInject.pending.forEach(addStyle);
+    pending = undefined;
+    window.removeEventListener('DOMContentLoaded', injectPendingCSS);
+  }
+
+  window.addEventListener('DOMContentLoaded', injectPendingCSS);
+
+  function styleLoader(css) {
+    if (document.head) {
+      addStyle(css);
+    } else {
+      pending.push(css);
+    }
+  }
+
+  return styleLoader;
+}());
 
 const isGm = (typeof unsafeWindow !== 'undefined') && (unsafeWindow !== window);
 if (isGm) {

@@ -20,6 +20,7 @@ function build(suffix, isLegacy, plugins) {
         include: 'src/**/*.html',
       }),
       postcss({
+        inject: (cssVariableName) => `styleInject(${cssVariableName});`,
         plugins: [
           postcssUrl({
             url: 'inline',

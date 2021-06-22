@@ -34,7 +34,7 @@
 -->
 
 ⚠　只需要「秒传」功能的可以参见这个脚本：<br>
-　　　[秒传链接提取](https://greasyfork.org/scripts/397324)
+　　　[秒传链接提取](https://greasyfork.org/scripts/424574)
 
 👉　源代码托管在 [<img src="https://github.githubassets.com/favicons/favicon.png" width=14 /> GitHub](https://github.com/JixunMoe/dupan-helper)
 

@@ -47,9 +47,9 @@
 * 标准提取码 - 再也不怕文件链接坏掉了^<sup>1</sup>  
   ![标准提取码][std_code]
 
-[custom_pwd]: https://i.loli.net/2020/04/15/ocXN1sSOEeAwjZ8.png
-[batch_rename]: https://i.loli.net/2020/04/15/QOL4kcC6IGdR8Ze.png
-[std_code]: https://i.loli.net/2020/04/15/3tZ5Ae6oE2aVRqI.png
+[custom_pwd]: https://cdn.jsdelivr.net/gh/jixunmoe/dupan-helper@main/doc/images/custom_pwd.png
+[batch_rename]: https://cdn.jsdelivr.net/gh/jixunmoe/dupan-helper@main/doc/images/batch_rename.png
+[std_code]: https://cdn.jsdelivr.net/gh/jixunmoe/dupan-helper@main/doc/images/std_code.png
 
 ^<sup>1</sup>: 取决于百度网盘的服务器是否有这个文件以及是否屏蔽。
 

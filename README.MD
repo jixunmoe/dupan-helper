@@ -1,14 +1,14 @@
 仓库用度盘投稿助手
 ==================
 
-适用于：Google Chrome (80+)、Firefox (74+)。
+适用于：Google Chrome (80+)、Firefox (74+) 以及 Microsoft Edge (91+)。
 
 [![到 GreasyFork 安装][btn_gf]][install_gf]
 [![到 jsDelivr 安装][btn_jd]][install_jd]
 [![到 GitHub 安装][btn_gh]][install_gh]
 
 [install_gf]: https://greasyfork.org/scripts/3285
-[install_gh]: https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/dist/dupan-helper.user.js
+[install_gh]: https://raw.githubusercontent.com/JixunMoe/dupan-helper/main/dist/dupan-helper.user.js
 [install_jd]: https://cdn.jsdelivr.net/gh/JixunMoe/dupan-helper/dist/dupan-helper.user.js
 
 你的浏览器不在上方或者无效果？你可以安装兼容版：<br>
@@ -17,7 +17,7 @@
 [![到 GitHub 安装][btn_gh]][install_ghl]
 
 [install_gfl]: https://greasyfork.org/scripts/400800
-[install_ghl]: https://raw.githubusercontent.com/JixunMoe/dupan-helper/master/dist/dupan-helper-legacy.user.js
+[install_ghl]: https://raw.githubusercontent.com/JixunMoe/dupan-helper/main/dist/dupan-helper-legacy.user.js
 [install_jdl]: https://cdn.jsdelivr.net/gh/JixunMoe/dupan-helper/dist/dupan-helper-legacy.user.js
 
 ※ 兼容版使用 `babel` 对代码进行降级处理以支援更多的浏览器。

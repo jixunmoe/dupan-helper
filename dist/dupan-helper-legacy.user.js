@@ -2,7 +2,7 @@
 // @name              仓库用度盘投稿助手 (兼容版)
 // @name:en           Baidu™ WebDisk Helper (dupan-helper) (Legacy)
 // @namespace         moe.jixun.dupan.galacg
-// @version           1.3.21
+// @version           1.3.22
 // @description       简易功能增强, 方便仓库投稿用
 // @description:en    Enhancements for Baidu™ WebDisk.
 // @author            Jixun<https://jixun.moe/>
@@ -2888,35 +2888,32 @@ document.addEventListener('keyup', function (e) {
   }
 }, false);
 
-}
 
-const styleInject = (function styleLoaderFactory() {
-  let pending = [];
-
-  function addStyle(css) {
+// eslint-disable-next-line no-unused-vars
+function styleInject(css) {
+  function addStyle(cssText) {
     const style = document.createElement('style');
-    style.textContent = css;
+    style.textContent = cssText;
     document.head.appendChild(style);
   }
 
-  function injectPendingCSS() {
-    styleInject.pending.forEach(addStyle);
-    pending = undefined;
-    window.removeEventListener('DOMContentLoaded', injectPendingCSS);
+  if (document.head) {
+    addStyle(css);
+  } else if (styleInject.pending) {
+    styleInject.pending.push(css);
+  } else {
+    const injectPendingCSS = () => {
+      styleInject.pending.forEach(addStyle);
+      styleInject.pending = undefined;
+      window.removeEventListener('DOMContentLoaded', injectPendingCSS);
+    };
+
+    styleInject.pending = [css];
+    window.addEventListener('DOMContentLoaded', injectPendingCSS);
   }
+}
 
-  window.addEventListener('DOMContentLoaded', injectPendingCSS);
-
-  function styleLoader(css) {
-    if (document.head) {
-      addStyle(css);
-    } else {
-      pending.push(css);
-    }
-  }
-
-  return styleLoader;
-}());
+}
 
 const isGm = (typeof unsafeWindow !== 'undefined') && (unsafeWindow !== window);
 if (isGm) {

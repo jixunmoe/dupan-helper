@@ -8,12 +8,15 @@ function updateVersion(str) {
 
 const loader = fs.readFileSync(`${__dirname}/loader.js`, 'utf-8');
 const meta = updateVersion(fs.readFileSync(`${__dirname}/meta.js`, 'utf-8'));
+const styleInject = updateVersion(fs.readFileSync(`${__dirname}/style-inject.js`, 'utf-8'));
 
 const wrapUserScript = (code, isLegacy) => `
 ${meta.replace(/( *){{LEGACY:(.+?)}}( *)/g, isLegacy ? '$1$2$3' : '')}
 
 function entryPoint () {
 ${code}
+
+${styleInject}
 }
 
 ${loader}
